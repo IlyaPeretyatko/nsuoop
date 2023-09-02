@@ -1,0 +1,1 @@
+/usr/bin/c++ "CMakeFiles/nsuoop-cpp-1.dir/main.cpp.o" CMakeFiles/corelib.dir/module1.cpp.o CMakeFiles/corelib.dir/module2.cpp.o -o nsuoop-cpp-1 
