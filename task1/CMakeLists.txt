@@ -47,6 +47,6 @@ FetchContent_MakeAvailable(googletest)
 
 # описываем исполняемый файл программы для запуска тестов: это cpp-файлы тестов + основная библиотека + библиотека gtest_main
 # наш собственный main.cpp здесь не нужен, т.к. функция main реализована в gtest_main
-add_executable(${test_name} test.cpp)
+add_executable(${test_name} test_module1.cpp test_module2.cpp)
 target_link_libraries(${test_name} gtest_main)
 target_link_libraries(${test_name} corelib)
