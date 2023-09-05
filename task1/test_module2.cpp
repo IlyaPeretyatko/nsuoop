@@ -3,9 +3,10 @@
 
 namespace {
 
-// TODO: переименовать тесты, написать реализации
-TEST(TaskTest, say_hello) {
-    
+TEST(Test, GetNameJames) {
+    using Module2::getMyName;
+
+    EXPECT_EQ(getMyName(), "James");
 }
 
 }
