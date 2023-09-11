@@ -105,6 +105,7 @@ void BitArray::resize(int num_bits, bool value) {
     }
     if (countOfBits != num_bits) {
         BitArray tmp = BitArray(*this);
+        int tmp_count = countOfBits;
         delete [] array;
         countOfBits = num_bits;;
         length = (countOfBits - (countOfBits - 1) % 8 + 8) / 8;
@@ -114,7 +115,7 @@ void BitArray::resize(int num_bits, bool value) {
                 (*this).set(i,true);
             }
         }
-        for (int i = 1; i <= countOfBits; ++i) {
+        for (int i = 1; i <= tmp_count; ++i) {
             (*this).set(i, tmp[i]);
         }
     }
