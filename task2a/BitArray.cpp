@@ -1,17 +1,14 @@
 #include "BitArray.h"
 
-int main() {
-    BitArray str;
-    str.set(5,1);
-    std::cout << str.to_string() << std::endl;
-    return 0;
-}
 
 BitArray::BitArray() : countOfBits(8) {
     AllocateArray();
 }
 
 void BitArray:: AllocateArray() {
+    if (countOfBits < 1) {
+        throw std::length_error("Negative value");
+    }
     length = (countOfBits - (countOfBits - 1) % 8 + 8) / 8;
     array = new int[length];
     for (int i = 0; i < length; ++i) {
@@ -37,6 +34,9 @@ BitArray::BitArray(int num_bits, unsigned long value) : countOfBits(num_bits) {
 }
 
 BitArray& BitArray::set(int n, bool val) {
+    if (n < 1) {
+        throw std::length_error("Negative value");
+    }
     if (val) {
         array[((n - (n - 1) % 8 + 8) / 8) - 1] |= (val << (7 - (n - 1) % 8));
     } else {
@@ -53,6 +53,9 @@ BitArray& BitArray::set() {
 }
 
 BitArray& BitArray::reset(int n) {
+    if (n < 1) {
+        throw std::length_error("Negative value");
+    }
     (*this).set(n, false);
     return *this;
 }
@@ -97,6 +100,9 @@ void BitArray::clear() {
 }
 
 void BitArray::resize(int num_bits, bool value) {
+    if (num_bits < 1) {
+        throw std::length_error("Negative value");
+    }
     if (countOfBits != num_bits) {
         BitArray tmp = BitArray(*this);
         delete [] array;
@@ -115,6 +121,9 @@ void BitArray::resize(int num_bits, bool value) {
 }
 
 bool BitArray::operator[](int i) const {
+    if (i < 1 || i > countOfBits) {
+        throw std::length_error("Incorrect value");
+    }
     return (array[(i - (i - 1) % 8 + 8) / 8 - 1] & (1 << (7 - ((i - 1) % 8))));
 }
 
@@ -142,7 +151,6 @@ bool BitArray::none() const {
         return true;
     }
     return false;
-
 }
 
 BitArray BitArray::operator~() const {
@@ -169,6 +177,9 @@ bool BitArray::empty() const {
 }
 
 BitArray& BitArray::operator&=(const BitArray& b) {
+    if (countOfBits != b.countOfBits) {
+        throw std::length_error("Different size");
+    }
     for (int i = 1; i <= countOfBits; ++i) {
         (*this).set(i, (*this)[i] & b[i]);
     }
@@ -176,6 +187,9 @@ BitArray& BitArray::operator&=(const BitArray& b) {
 }
 
 BitArray& BitArray::operator|=(const BitArray& b) {
+    if (countOfBits != b.countOfBits) {
+        throw std::length_error("Different size");
+    }
     for (int i = 1; i <= countOfBits; ++i) {
         (*this).set(i, (*this)[i] | b[i]);
     }
@@ -183,6 +197,9 @@ BitArray& BitArray::operator|=(const BitArray& b) {
 }
 
 BitArray& BitArray::operator^=(const BitArray& b) {
+    if (countOfBits != b.countOfBits) {
+        throw std::length_error("Different size");
+    }
     for (int i = 1; i <= countOfBits; ++i) {
         (*this).set(i, (*this)[i] ^ b[i]);
     }
@@ -190,6 +207,9 @@ BitArray& BitArray::operator^=(const BitArray& b) {
 }
 
 BitArray& BitArray::operator>>=(int n) {
+    if (n < 1) {
+        throw std::length_error("Negative value");
+    }
     for (int i = 0; i < countOfBits; ++i) {
         if (countOfBits - i - n < 1) {
             (*this).set(countOfBits - i, 0);
@@ -206,6 +226,9 @@ BitArray BitArray::operator>>(int n) const {
 }
 
 BitArray& BitArray::operator<<=(int n) {
+    if (n < 1) {
+        throw std::length_error("Negative value");
+    }
     for (int i = 1; i <= countOfBits; ++i) {
         if (i + n > countOfBits) {
             (*this).set(i, 0);
@@ -260,6 +283,9 @@ bool operator!=(const BitArray & a, const BitArray & b) {
 }
 
 BitArray operator&(const BitArray& b1, const BitArray& b2) {
+    if (b1.size() != b2.size()) {
+        throw std::length_error("Different size");
+    }
     BitArray returnObject = BitArray(b1);
     for (int i = 1; i <= returnObject.size(); ++i) {
         returnObject.set(i, b1[i] & b2[i]);
@@ -268,6 +294,9 @@ BitArray operator&(const BitArray& b1, const BitArray& b2) {
 }
 
 BitArray operator|(const BitArray& b1, const BitArray& b2) {
+    if (b1.size() != b2.size()) {
+        throw std::length_error("Different size");
+    }
     BitArray returnObject = BitArray(b1);
     for (int i = 1; i <= returnObject.size(); ++i) {
         returnObject.set(i, b1[i] | b2[i]);
@@ -276,6 +305,9 @@ BitArray operator|(const BitArray& b1, const BitArray& b2) {
 }
 
 BitArray operator^(const BitArray& b1, const BitArray& b2) {
+    if (b1.size() != b2.size()) {
+        throw std::length_error("Different size");
+    }
     BitArray returnObject = BitArray(b1);
     for (int i = 1; i <= returnObject.size(); ++i) {
         returnObject.set(i, b1[i] ^ b2[i]);
