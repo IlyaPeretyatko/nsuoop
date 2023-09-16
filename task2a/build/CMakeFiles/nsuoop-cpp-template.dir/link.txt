@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/nsuoop-cpp-template.dir/main.cpp.o CMakeFiles/corelib.dir/BitArray.cpp.o  -o nsuoop-cpp-template 
