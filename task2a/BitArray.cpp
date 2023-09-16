@@ -30,7 +30,6 @@ BitArray::BitArray(int num_bits, unsigned long value) : countOfBits(num_bits) {
             (*this).set(9 - i, 0);
         }
     }
-    
 }
 
 BitArray& BitArray::set(int n, bool val) {
@@ -214,8 +213,9 @@ BitArray& BitArray::operator>>=(int n) {
     for (int i = 0; i < countOfBits; ++i) {
         if (countOfBits - i - n < 1) {
             (*this).set(countOfBits - i, 0);
+        } else {
+            (*this).set(countOfBits - i, (*this)[countOfBits - i - n]);
         }
-        (*this).set(countOfBits - i, (*this)[countOfBits - i - n]);
     }
     return *this;
 }
@@ -233,8 +233,9 @@ BitArray& BitArray::operator<<=(int n) {
     for (int i = 1; i <= countOfBits; ++i) {
         if (i + n > countOfBits) {
             (*this).set(i, 0);
+        } else {
+            (*this).set(i, (*this)[i + n]);
         }
-        (*this).set(i, (*this)[i + n]);
     }
     return *this;
 }

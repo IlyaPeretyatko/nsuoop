@@ -80,6 +80,17 @@ install/local/fast: preinstall/fast
 	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local/fast
 
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
+
 # Special rule for the target install
 install: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
@@ -112,17 +123,6 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
-
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -170,17 +170,17 @@ test/fast:
 .PHONY : test/fast
 
 #=============================================================================
-# Target rules for targets named nsuoop-cpp-template
+# Target rules for targets named bitarray
 
 # Build rule for target.
-nsuoop-cpp-template: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 nsuoop-cpp-template
-.PHONY : nsuoop-cpp-template
+bitarray: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 bitarray
+.PHONY : bitarray
 
 # fast build rule for target.
-nsuoop-cpp-template/fast:
-	$(MAKE) -f CMakeFiles/nsuoop-cpp-template.dir/build.make CMakeFiles/nsuoop-cpp-template.dir/build
-.PHONY : nsuoop-cpp-template/fast
+bitarray/fast:
+	$(MAKE) -f CMakeFiles/bitarray.dir/build.make CMakeFiles/bitarray.dir/build
+.PHONY : bitarray/fast
 
 #=============================================================================
 # Target rules for targets named corelib
@@ -280,7 +280,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) -f CMakeFiles/nsuoop-cpp-template.dir/build.make CMakeFiles/nsuoop-cpp-template.dir/main.cpp.o
+	$(MAKE) -f CMakeFiles/bitarray.dir/build.make CMakeFiles/bitarray.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -289,7 +289,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) -f CMakeFiles/nsuoop-cpp-template.dir/build.make CMakeFiles/nsuoop-cpp-template.dir/main.cpp.i
+	$(MAKE) -f CMakeFiles/bitarray.dir/build.make CMakeFiles/bitarray.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -298,7 +298,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) -f CMakeFiles/nsuoop-cpp-template.dir/build.make CMakeFiles/nsuoop-cpp-template.dir/main.cpp.s
+	$(MAKE) -f CMakeFiles/bitarray.dir/build.make CMakeFiles/bitarray.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 test.o: test.cpp.o
@@ -336,12 +336,12 @@ help:
 	@echo "... depend"
 	@echo "... install/strip"
 	@echo "... install/local"
+	@echo "... edit_cache"
+	@echo "... test"
 	@echo "... install"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... edit_cache"
-	@echo "... test"
-	@echo "... nsuoop-cpp-template"
+	@echo "... bitarray"
 	@echo "... corelib"
 	@echo "... gmock_main"
 	@echo "... gmock"

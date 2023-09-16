@@ -1,11 +1,11 @@
 /home/ilya/nsuoop/task2a/build/CMakeFiles/install/strip.dir
 /home/ilya/nsuoop/task2a/build/CMakeFiles/install/local.dir
+/home/ilya/nsuoop/task2a/build/CMakeFiles/edit_cache.dir
+/home/ilya/nsuoop/task2a/build/CMakeFiles/test.dir
 /home/ilya/nsuoop/task2a/build/CMakeFiles/install.dir
 /home/ilya/nsuoop/task2a/build/CMakeFiles/list_install_components.dir
 /home/ilya/nsuoop/task2a/build/CMakeFiles/rebuild_cache.dir
-/home/ilya/nsuoop/task2a/build/CMakeFiles/edit_cache.dir
-/home/ilya/nsuoop/task2a/build/CMakeFiles/test.dir
-/home/ilya/nsuoop/task2a/build/CMakeFiles/nsuoop-cpp-template.dir
+/home/ilya/nsuoop/task2a/build/CMakeFiles/bitarray.dir
 /home/ilya/nsuoop/task2a/build/CMakeFiles/corelib.dir
 /home/ilya/nsuoop/task2a/build/_deps/googletest-build/CMakeFiles/install/strip.dir
 /home/ilya/nsuoop/task2a/build/_deps/googletest-build/CMakeFiles/install/local.dir

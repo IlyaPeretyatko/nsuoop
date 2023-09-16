@@ -172,3 +172,112 @@ TEST(BitArray, swap) {
     EXPECT_EQ(ar2[7], 0);
     EXPECT_EQ(ar2[8], 1); 
 }
+
+TEST(BitArray, shift) {
+    BitArray ar;
+    ar.set(2, 1);
+    ar.set(5, 1);
+    EXPECT_EQ(ar[1], 0);
+    EXPECT_EQ(ar[2], 1);
+    EXPECT_EQ(ar[3], 0);
+    EXPECT_EQ(ar[4], 0);
+    EXPECT_EQ(ar[5], 1);
+    EXPECT_EQ(ar[6], 0);
+    EXPECT_EQ(ar[7], 0);
+    EXPECT_EQ(ar[8], 0);
+    ar >>= 3;
+    EXPECT_EQ(ar[1], 0);
+    EXPECT_EQ(ar[2], 0);
+    EXPECT_EQ(ar[3], 0);
+    EXPECT_EQ(ar[4], 0);
+    EXPECT_EQ(ar[5], 1);
+    EXPECT_EQ(ar[6], 0);
+    EXPECT_EQ(ar[7], 0);
+    EXPECT_EQ(ar[8], 1);
+    ar <<= 7;
+    EXPECT_EQ(ar[1], 1);
+    EXPECT_EQ(ar[2], 0);
+    EXPECT_EQ(ar[3], 0);
+    EXPECT_EQ(ar[4], 0);
+    EXPECT_EQ(ar[5], 0);
+    EXPECT_EQ(ar[6], 0);
+    EXPECT_EQ(ar[7], 0);
+    EXPECT_EQ(ar[8], 0);
+}
+
+TEST(BitArray, SetAndReset) {
+    BitArray ar = BitArray(12, 8);
+    ar.set();
+    EXPECT_EQ(ar[1], 1);
+    EXPECT_EQ(ar[2], 1);
+    EXPECT_EQ(ar[3], 1);
+    EXPECT_EQ(ar[4], 1);
+    EXPECT_EQ(ar[5], 1);
+    EXPECT_EQ(ar[6], 1);
+    EXPECT_EQ(ar[7], 1);
+    EXPECT_EQ(ar[8], 1);
+    EXPECT_EQ(ar[9], 1);
+    EXPECT_EQ(ar[10], 1);
+    EXPECT_EQ(ar[11], 1);
+    EXPECT_EQ(ar[12], 1);
+    ar.reset();
+    EXPECT_EQ(ar[1], 0);
+    EXPECT_EQ(ar[2], 0);
+    EXPECT_EQ(ar[3], 0);
+    EXPECT_EQ(ar[4], 0);
+    EXPECT_EQ(ar[5], 0);
+    EXPECT_EQ(ar[6], 0);
+    EXPECT_EQ(ar[7], 0);
+    EXPECT_EQ(ar[8], 0);
+    EXPECT_EQ(ar[9], 0);
+    EXPECT_EQ(ar[10], 0);
+    EXPECT_EQ(ar[11], 0);
+    EXPECT_EQ(ar[12], 0);
+}
+
+TEST(BitArray, any) {
+    BitArray ar;
+    EXPECT_EQ(ar.any(), false);
+    ar.set(1, 1);
+    EXPECT_EQ(ar.any(), true);
+}
+
+TEST(BitArray, none) {
+    BitArray ar;
+    EXPECT_EQ(ar.none(), true);
+    ar.set(1, 1);
+    EXPECT_EQ(ar.none(), false);
+}
+
+TEST(BitArray, inversion) {
+    BitArray ar1;
+    BitArray ar2;
+    ar2.set(5,1);
+    ar1 = ~ar2;
+    EXPECT_EQ(ar1[1], 1);
+    EXPECT_EQ(ar1[2], 1);
+    EXPECT_EQ(ar1[3], 1);
+    EXPECT_EQ(ar1[4], 1);
+    EXPECT_EQ(ar1[5], 0);
+    EXPECT_EQ(ar1[6], 1);
+    EXPECT_EQ(ar1[7], 1);
+    EXPECT_EQ(ar1[8], 1);
+    EXPECT_EQ(ar2[1], 0);
+    EXPECT_EQ(ar2[2], 0);
+    EXPECT_EQ(ar2[3], 0);
+    EXPECT_EQ(ar2[4], 0);
+    EXPECT_EQ(ar2[5], 1);
+    EXPECT_EQ(ar2[6], 0);
+    EXPECT_EQ(ar2[7], 0);
+    EXPECT_EQ(ar2[8], 0);   
+}
+
+TEST(BitArray, ToString) {
+    BitArray ar = BitArray(12, 8);
+    EXPECT_EQ(ar.to_string(), "000010000000");
+    ar.resize(5);
+    ar.set(1,1);
+    ar.set(2,1);
+    ar.set(3,1);
+    EXPECT_EQ(ar.to_string(), "11101");
+}

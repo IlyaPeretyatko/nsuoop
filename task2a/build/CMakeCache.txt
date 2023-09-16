@@ -196,7 +196,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=nsuoop-cpp-template
+CMAKE_PROJECT_NAME:STATIC=bitarray
 
 //Value Computed by CMake
 CMAKE_PROJECT_VERSION:STATIC=1.12.1
@@ -301,6 +301,12 @@ INSTALL_GTEST:BOOL=ON
 
 //Path to a program.
 _Python_EXECUTABLE:FILEPATH=/usr/bin/python3.8
+
+//Value Computed by CMake
+bitarray_BINARY_DIR:STATIC=/home/ilya/nsuoop/task2a/build
+
+//Value Computed by CMake
+bitarray_SOURCE_DIR:STATIC=/home/ilya/nsuoop/task2a
 
 //Value Computed by CMake
 gmock_BINARY_DIR:STATIC=/home/ilya/nsuoop/task2a/build/_deps/googletest-build/googlemock
