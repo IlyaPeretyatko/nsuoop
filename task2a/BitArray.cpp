@@ -10,7 +10,7 @@ void BitArray:: AllocateArray() {
         throw std::length_error("Negative value");
     }
     length = (countOfBits - (countOfBits - 1) % 8 + 8) / 8;
-    array = new int[length];
+    array = new char[length];
     for (int i = 0; i < length; ++i) {
         array[i] = 0;
     }
@@ -24,11 +24,8 @@ BitArray::~BitArray() {
 
 BitArray::BitArray(int num_bits, unsigned long value) : countOfBits(num_bits) {
     AllocateArray();
-    array[0] = value;
-    if (countOfBits < 8) {
-        for (int i = 1; 8 - countOfBits; ++i) {
-            (*this).set(9 - i, 0);
-        }
+    for (int i = 0; i < (countOfBits >= 32 ? 32 : countOfBits); ++i) {
+        this->set(i + 1, 1 & (value >> i));
     }
 }
 
