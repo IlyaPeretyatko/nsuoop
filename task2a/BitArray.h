@@ -47,7 +47,7 @@ public:
 private:
     int countOfBits;
     int length;
-    int *array;
+    char *array;
 };
 
 bool operator==(const BitArray & a, const BitArray & b);
