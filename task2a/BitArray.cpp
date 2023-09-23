@@ -2,10 +2,10 @@
 
 
 BitArray::BitArray() : countOfBits(8) {
-    AllocateArray();
+    allocateArray();
 }
 
-void BitArray:: AllocateArray() {
+void BitArray:: allocateArray() {
     if (countOfBits < 1) {
         throw std::length_error("Negative value");
     }
@@ -23,7 +23,7 @@ BitArray::~BitArray() {
 }
 
 BitArray::BitArray(int num_bits, unsigned long value) : countOfBits(num_bits) {
-    AllocateArray();
+    allocateArray();
     for (int i = 0; i < (countOfBits >= 32 ? 32 : countOfBits); ++i) {
         this->set(i + 1, 1 & (value >> i));
     }
@@ -66,7 +66,7 @@ BitArray& BitArray::reset() {
 BitArray::BitArray(const BitArray& b) {
     countOfBits = b.countOfBits;
     length = b.length;
-    AllocateArray();
+    allocateArray();
     for (int i = 0; i < length; ++i) {
         array[i] = b.array[i];
     }
@@ -82,7 +82,7 @@ BitArray& BitArray::operator=(const BitArray& b) {
     countOfBits = b.countOfBits;
     length = b.length;
     delete [] array;
-    AllocateArray();
+    allocateArray();
     for (int i = 0; i < length; ++i) {
         array[i] = b.array[i];
     }
@@ -105,7 +105,7 @@ void BitArray::resize(int num_bits, bool value) {
         delete [] array;
         countOfBits = num_bits;;
         length = (countOfBits - (countOfBits - 1) % 8 + 8) / 8;
-        AllocateArray();
+        allocateArray();
         if (value == true) {
             for (int i = 1; i < length * 8; ++i) {
                 (*this).set(i,true);
@@ -253,7 +253,7 @@ int BitArray::count() const {
     return count;
 }
 
-std::string BitArray::to_string() const {
+std::string BitArray::toString() const {
     std::string str;
     for (int i = 1; i <= countOfBits; ++i) {
         if ((*this)[i]) {

@@ -274,10 +274,10 @@ TEST(BitArray, inversion) {
 
 TEST(BitArray, ToString) {
     BitArray ar = BitArray(12, 8);
-    EXPECT_EQ(ar.to_string(), "000100000000");
+    EXPECT_EQ(ar.toString(), "000100000000");
     ar.resize(5);
     ar.set(1,1);
     ar.set(2,1);
     ar.set(3,1);
-    EXPECT_EQ(ar.to_string(), "11110");
+    EXPECT_EQ(ar.toString(), "11110");
 }

@@ -10,7 +10,7 @@ class BitArray
 public:
   BitArray();
   ~BitArray();
-  void AllocateArray();
+  void allocateArray();
   explicit BitArray(int num_bits, unsigned long value = 0);
   BitArray(const BitArray& b);
 
@@ -43,7 +43,7 @@ public:
   int size() const;
   bool empty() const;
 
-  std::string to_string() const;
+  std::string toString() const;
 private:
     int countOfBits;
     int length;
