@@ -5,14 +5,13 @@ bool cmp(std::pair<std::string, int>& a, std::pair<std::string, int>& b) {
     return a.second > b.second;
 }
 
-void WordCounter::mapSortToVector() {
+
+void WordCounter::output(std::ostream& fileOut) {
+    std::vector<std::pair<std::string, int>> mapVector;
     for (auto& it : table) {
         mapVector.push_back(it);
     }
     std::sort(mapVector.begin(), mapVector.end(), cmp);
-}
-
-void WordCounter::output(std::ostream& fileOut) {
     size_t count = 0;
     for (auto& it : mapVector) {
         count += it.second;
@@ -48,5 +47,4 @@ void WordCounter::parser(std::istream& fileIn) {
         }
         line.clear();
     }
-    mapSortToVector();
 }
