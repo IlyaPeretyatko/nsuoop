@@ -1,28 +1,21 @@
 #include "Life.h"
+#include <fstream>
 
-int main() {
-    return 0;
+Life::Life() : width(0), height(0), name("") {
+    field = nullptr;
 }
 
-int Life::getWidth() {
-    return this->width;
-}
-
-int Life::getHeight() {
-    return this->height;
-}
-
-std::string Life::getName() {
-    return this->name;
+Life::Life(int width, int height) : width(width), height(height) {
+    allocateMemoryForField();
 }
 
 void Life::allocateMemoryForField() {
-    field = new char*[this->height];
+    field = new unsigned char*[this->height];
     if (field == nullptr) {
         throw std::length_error("Allocate Memory Error");
     }
     for (int i = 0; i < this->height; ++i) {
-        field[i] = new char[this->width];
+        field[i] = new unsigned char[this->width];
         if (field[i] == nullptr) {
             throw std::length_error("Allocate Memory Error");
         }
@@ -30,23 +23,6 @@ void Life::allocateMemoryForField() {
             field[i][j] = 0;
         }
   }
-} 
-
-Life::Life() {
-    this->width = 20;
-    this->height = 20;
-    this->name = "Standart Universe";
-    this->survival.insert(2);
-    this->survival.insert(3);
-    this->birth.insert(3); 
-    allocateMemoryForField();     
-}
-
-Life::Life(int width, int height, std::string name, 
-    std::set<int> survival, std::set<int> birth) : 
-        width(width), height(height), name(std::move(name)),
-        survival(std::move(survival)), birth(std::move(birth)) {
-            allocateMemoryForField();
 }
 
 Life::~Life() {
@@ -62,7 +38,7 @@ Life::~Life() {
   }
 }
 
-char& Life::operator()(int i, int j) {
+unsigned char& Life::operator()(int i, int j) {
   if (i >= this->height || j >= this->width) {
         throw std::length_error("Wrong Index");
   }
@@ -71,7 +47,7 @@ char& Life::operator()(int i, int j) {
 
 
 void Life::newGeneration() {
-    Life nextGeneration = Life(this->width, this->height, this->name, this->survival, this->birth);
+    Life nextGeneration(this->width, this->height);
     int countOfNeighbours = 0;
     for (int i = 0; i < this->height; ++i) {
         for (int j = 0; j < this->width; ++j) {
@@ -83,20 +59,117 @@ void Life::newGeneration() {
             countOfNeighbours += (*this)(i, (j + 1 + this->width) % this->width);
             countOfNeighbours += (*this)((i - 1 + this->height) % this->height, j);
             countOfNeighbours += (*this)(i, (j - 1 + this->width) % this->width);
-            if (nextGeneration(i, j) == 1) {
-                if ((this->survival).find(countOfNeighbours) != (this->survival).end()) {
+            if ((*this)(i, j) == 1) {
+                if ((this->survival).count(countOfNeighbours) != 0) {
                     nextGeneration(i, j) = 1;
                 } else {
                     nextGeneration(i, j) = 0;
                 }
             } else {
-                if ((this->birth).find(countOfNeighbours) != (this->birth).end()) {
+                if ((this->birth).count(countOfNeighbours) != 0) {
                     nextGeneration(i, j) = 1;
                 }
             }
+            countOfNeighbours = 0;
         }
     }
     for (int i = 0; i < this->height; ++i) {
         std::copy(nextGeneration.field[i], nextGeneration.field[i] + nextGeneration.width, field[i]);
     }
+}
+
+void Life::getUniverseFromFile(std::string nameFile) {
+    std::string path = "../examples/";
+    path += nameFile;
+    std::ifstream file(path);
+    if (!file.is_open()) {
+        throw std::length_error("File Not Open");
+    }
+    std::string line;
+    while(std::getline(file, line, '\n')) {
+        if (line[0] == '#' && line[1] == 'N' && line[2] == ' ') {
+            for (int i = 3; i < (int)line.size(); ++i) {
+                this->name += line[i];
+            }
+        } else if (line[0] == '#' && line[1] == 'R' && line[2] == ' ') {
+            bool readB = true;
+            for (int i = 3; i < (int)line.size(); ++i) {
+                if (line[i] == 'S') {
+                    readB = false;
+                } else if (line[i] >= '0' && line[i] <= '9') {
+                    if (readB) {
+                        this->birth.insert((unsigned char)line[i] - '0');
+                    } else {
+                        this->survival.insert((unsigned char)line[i] - '0');
+                    }
+                }
+            }
+        } else if (line[0] == '#' && line[1] == 'S' && line[2] == ' ') {
+            std::string w = "";
+            std::string h = "";
+            bool readW = true;  
+            for (int i = 3; i < (int)line.size(); ++i) {
+                if (line[i] == '/') {
+                    readW = false;
+                } else if (line[i] >= '0' && line[i] <= '9') {
+                    if (readW) {
+                        w += line[i];
+                    } else {
+                        h += line[i];
+                    }
+                }
+            }
+            this->width = stoi(w);
+            this->height = stoi(h);
+            allocateMemoryForField();
+        } else if (line[0] == '#') {
+            continue;
+        } else {
+            std::string x = "";
+            std::string y = "";
+            bool readX = true;
+            for (int i = 0; i < (int)line.size(); ++i) {
+                if (line[i] == ' ') {
+                    readX = false;
+                    continue;
+                }
+                if (readX) {
+                    x += line[i];
+                } else {
+                    y += line[i];
+                }
+            }
+            this->field[std::stoi(x)][std::stoi(y)] = 1;
+        }
+    }
+    file.close();
+}
+
+void Life::saveToFile(std::string nameFile) {
+    std::string path = "../";
+    path += nameFile;
+    std::ofstream fout(path);
+    if (!fout.is_open()) {
+        throw std::length_error("File Not Open");
+    }
+    fout << "#Life 1.06" << std::endl;
+    fout << "#N " << this->name << std::endl;
+    fout << "#R " << "B";
+    for (auto& it: this->birth) {
+        fout << it;
+    }
+    fout << "/S";
+    for (auto& it: this->survival) {
+        fout << it;
+    }
+    fout << std::endl << "#S ";
+    fout << this->width << "/" << this->height << std::endl;
+    for (int i = 0; i < this->height; ++i) {
+        for (int j = 0; j < this->width; ++j) {
+            if (field[i][j]) {
+                fout << i << " " << j << std::endl;
+            }
+        }
+    }
+    fout.close();
 }

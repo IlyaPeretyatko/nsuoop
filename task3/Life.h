@@ -4,6 +4,7 @@
 #include <iostream>
 #include <set>
 
+
 class Life {
     private:
         int width;
@@ -11,17 +12,16 @@ class Life {
         std::string name;
         std::set<int> survival;
         std::set<int> birth;
-        char **field;
+        unsigned char **field;
         void allocateMemoryForField();
     public:
         Life();
-        Life(int width, int height, std::string name, std::set<int> survival, std::set<int> birth);
+        Life(int width, int height);
         ~Life();
-        char& operator()(int i, int j);
-        int getWidth();
-        int getHeight();
-        std::string getName();
-        void newGeneration();    
+        unsigned char& operator()(int i, int j);
+        void newGeneration();
+        void getUniverseFromFile(std::string nameFile);
+        void saveToFile(std::string nameFile);
 };
 
 
