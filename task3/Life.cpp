@@ -173,3 +173,36 @@ void Life::saveToFile(std::string nameFile) {
     }
     fout.close();
 }
+
+void Life::printUniverse() {
+    std::cout << "\t" << this->name << std::endl;
+    std::cout << "width x height : " << this->width << " x " << this->height << std::endl;
+    std::cout << "Birth / Survival : ";
+    for (auto& it: this->birth) {
+        std::cout << it << " ";
+    }
+    std::cout << "/ ";
+    for (auto& it: this->survival) {
+        std::cout << it << " ";
+    }
+    std::cout << std::endl;
+    for (int i = 0; i < this->width + 2; ++i) {
+        std::cout << "#";
+    }
+    std::cout << std::endl;
+    for (int i = 0; i < this->height; ++i) {
+        std::cout << "#";
+        for (int j = 0; j < this->width; ++j) {
+            if (field[i][j]) {
+                std::cout << "@";
+            } else {
+                std::cout << " ";
+            }
+        }
+        std::cout << "#" << std::endl;
+    }
+    for (int i = 0; i < this->width + 2; ++i) {
+        std::cout << "#";
+    }
+    std::cout << std::endl;
+}

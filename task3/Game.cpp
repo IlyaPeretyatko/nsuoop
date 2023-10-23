@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Life.h"
 #include <cstring>
+#include <regex>
 
 bool Game::getOptions(int argc, char **argv) {
     if (argc == 1) {
@@ -56,6 +57,30 @@ void Game::onlineLaunch() {
         universe.getUniverseFromFile(this->inputFile);
     }
     while (true) {
-        
+        std::string command;
+        std::getline(std::cin, command);
+        std::smatch smatch;
+        if (command == "exit") {
+            break;
+        } else if (command == "help") {
+            system("clear");
+            std::cout << "dump <filename> - save universe to file;\n"
+                         "tick <n> - calculate n (default 1) iterations and print result;\n"
+                         "exit - finish game;\n"
+                         "help - print help about commands;\n";
+        } else if (std::regex_search(command, smatch, std::regex("^(dump )(\\S*)"))) {
+            universe.saveToFile(smatch[2].str());
+        } else if (std::regex_search(command, std::regex("^tick"))) {
+            system("clear");
+            countOfIterations = 1;
+            if (std::regex_search(command, smatch, std::regex("^(tick )(\\S*)"))) {
+            countOfIterations = stoi(smatch[2].str());
+            }
+            for (int i = 0; i < countOfIterations; ++i) {
+               universe.newGeneration();
+            }
+            universe.printUniverse();
+        }
     }
+
 }

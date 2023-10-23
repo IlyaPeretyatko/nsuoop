@@ -22,6 +22,7 @@ class Life {
         void newGeneration();
         void getUniverseFromFile(std::string nameFile);
         void saveToFile(std::string nameFile);
+        void printUniverse();
 };
 
 
