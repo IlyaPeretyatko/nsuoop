@@ -1,6 +1,59 @@
 #include "FileManagment.h"
 #include <fstream>
 
+void FileManagment::getCellFromFile(std::string line) {
+    std::string x = "";
+    std::string y = "";
+    bool readX = true;
+    for (int i = 0; i < (int)line.size(); ++i) {
+        if (line[i] == ' ') {
+            readX = false;
+            continue;
+        }
+        if (readX) {
+            x += line[i];
+        } else {
+            y += line[i];
+        }
+    }
+    this->field[std::stoi(x)][std::stoi(y)] = 1;
+}
+
+void FileManagment::getSizeFromFile(std::string line) {
+    std::string w = "";
+    std::string h = "";
+    bool readW = true;  
+    for (int i = 3; i < (int)line.size(); ++i) {
+        if (line[i] == '/') {
+            readW = false;
+        } else if (line[i] >= '0' && line[i] <= '9') {
+            if (readW) {
+                w += line[i];
+            } else {
+                h += line[i];
+            }
+        }
+    }
+    this->width = stoi(w);
+    this->height = stoi(h);
+    allocateMemoryForField();
+}
+
+void FileManagment::getRuleFromFile(std::string line) {
+    bool readB = true;
+    for (int i = 3; i < (int)line.size(); ++i) {
+        if (line[i] == 'S') {
+            readB = false;
+        } else if (line[i] >= '0' && line[i] <= '9') {
+            if (readB) {
+                this->birth.insert((unsigned char)line[i] - '0');
+            } else {
+                this->survival.insert((unsigned char)line[i] - '0');
+            }
+        }
+    }
+}
+
 void FileManagment::getUniverseFromFile(std::string nameFile) {
     std::string path = "../examples/";
     path += nameFile;
@@ -15,54 +68,13 @@ void FileManagment::getUniverseFromFile(std::string nameFile) {
                 this->name += line[i];
             }
         } else if (line[0] == '#' && line[1] == 'R' && line[2] == ' ') {
-            bool readB = true;
-            for (int i = 3; i < (int)line.size(); ++i) {
-                if (line[i] == 'S') {
-                    readB = false;
-                } else if (line[i] >= '0' && line[i] <= '9') {
-                    if (readB) {
-                        this->birth.insert((unsigned char)line[i] - '0');
-                    } else {
-                        this->survival.insert((unsigned char)line[i] - '0');
-                    }
-                }
-            }
+            getRuleFromFile(line);
         } else if (line[0] == '#' && line[1] == 'S' && line[2] == ' ') {
-            std::string w = "";
-            std::string h = "";
-            bool readW = true;  
-            for (int i = 3; i < (int)line.size(); ++i) {
-                if (line[i] == '/') {
-                    readW = false;
-                } else if (line[i] >= '0' && line[i] <= '9') {
-                    if (readW) {
-                        w += line[i];
-                    } else {
-                        h += line[i];
-                    }
-                }
-            }
-            this->width = stoi(w);
-            this->height = stoi(h);
-            allocateMemoryForField();
-        } else if (line[0] == '#') {
+            getSizeFromFile(line);
+        } else if (line[0] == '#' || line.empty()) {
             continue;
         } else {
-            std::string x = "";
-            std::string y = "";
-            bool readX = true;
-            for (int i = 0; i < (int)line.size(); ++i) {
-                if (line[i] == ' ') {
-                    readX = false;
-                    continue;
-                }
-                if (readX) {
-                    x += line[i];
-                } else {
-                    y += line[i];
-                }
-            }
-            this->field[std::stoi(x)][std::stoi(y)] = 1;
+            getCellFromFile(line);
         }
     }
     file.close();

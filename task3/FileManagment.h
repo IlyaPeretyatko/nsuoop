@@ -8,7 +8,9 @@
 
 class FileManagment : public Life {
     private:
-
+        void getCellFromFile(std::string line);
+        void getSizeFromFile(std::string line);
+        void getRuleFromFile(std::string line);
     public:
         FileManagment() = default;
         void getUniverseFromFile(std::string nameFile);
