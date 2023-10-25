@@ -52,7 +52,7 @@ void Game::offlineLaunch() {
 void Game::onlineLaunch() {
     Life universe;
     if (mode == 0) {
-        universe.getUniverseFromFile("../examples/example");
+        universe.getUniverseFromFile("../examples/example.life");
     } else if (mode == 1) {
         universe.getUniverseFromFile(this->inputFile);
     }
@@ -70,7 +70,7 @@ void Game::onlineLaunch() {
                          "help - print help about commands;\n";
         } else if (std::regex_search(command, smatch, std::regex("^(dump )(\\S*)"))) {
             universe.saveToFile(smatch[2].str());
-        } else if (std::regex_search(command, std::regex("^tick"))) {
+        } else if (std::regex_search(command, std::regex("^tick")) || command.empty()) {
             system("clear");
             countOfIterations = 1;
             if (std::regex_search(command, smatch, std::regex("^(tick )(\\S*)"))) {
