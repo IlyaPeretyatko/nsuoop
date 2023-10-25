@@ -1,9 +1,10 @@
 #ifndef GAME_H_
 #define GAME_H_
 
+#include "FileManagment.h"
 #include <iostream>
 
-class Game {
+class Game : public FileManagment {
     private:
         std::string inputFile;
         std::string outputFile;

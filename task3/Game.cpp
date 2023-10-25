@@ -41,20 +41,19 @@ void Game::launch() {
 }
 
 void Game::offlineLaunch() {
-    Life universe;
-    universe.getUniverseFromFile(this->inputFile);
+    getUniverseFromFile(this->inputFile);
     for (int i = 0; i < countOfIterations; ++i) {
-        universe.newGeneration();
+        newGeneration();
     }
-    universe.saveToFile(this->outputFile);
+    saveToFile(this->outputFile);
 }
 
 void Game::onlineLaunch() {
     Life universe;
     if (mode == 0) {
-        universe.getUniverseFromFile("../examples/example.life");
+        getUniverseFromFile("../examples/example.life");
     } else if (mode == 1) {
-        universe.getUniverseFromFile(this->inputFile);
+        getUniverseFromFile(this->inputFile);
     }
     while (true) {
         std::string command;
@@ -69,7 +68,7 @@ void Game::onlineLaunch() {
                          "exit - finish game;\n"
                          "help - print help about commands;\n";
         } else if (std::regex_search(command, smatch, std::regex("^(dump )(\\S*)"))) {
-            universe.saveToFile(smatch[2].str());
+            saveToFile(smatch[2].str());
         } else if (std::regex_search(command, std::regex("^tick")) || command.empty()) {
             system("clear");
             countOfIterations = 1;
@@ -77,9 +76,9 @@ void Game::onlineLaunch() {
             countOfIterations = stoi(smatch[2].str());
             }
             for (int i = 0; i < countOfIterations; ++i) {
-               universe.newGeneration();
+               newGeneration();
             }
-            universe.printUniverse();
+            printUniverse();
         }
     }
 

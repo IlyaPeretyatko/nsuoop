@@ -5,8 +5,9 @@
 #include <set>
 
 
+
 class Life {
-    private:
+    protected:
         int width;
         int height;
         std::string name;
@@ -20,9 +21,6 @@ class Life {
         ~Life();
         unsigned char& operator()(int i, int j);
         void newGeneration();
-        void getUniverseFromFile(std::string nameFile);
-        void saveToFile(std::string nameFile);
-        void printUniverse();
 };
 
 
