@@ -24,11 +24,12 @@ class Life {
         std::set<int> survival;
         std::set<int> birth;
         std::vector<Cell> livingCells;
+        
+        int checkNeighbours(int i, int j, int x, int y);
+        bool operator()(int i, int j);
     public:
         Life() = default;
         void newGeneration();
-        int checkNeighbours(int i, int j, int x, int y);
-        bool operator()(int i, int j);
 };
 
 
