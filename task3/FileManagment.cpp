@@ -16,7 +16,8 @@ void FileManagment::getCellFromFile(std::string line) {
             y += line[i];
         }
     }
-    this->field[std::stoi(x)][std::stoi(y)] = 1;
+    Cell newCell(std::stoi(x), std::stoi(y));
+    this->field.push_back(newCell);
 }
 
 void FileManagment::getSizeFromFile(std::string line) {
@@ -36,7 +37,6 @@ void FileManagment::getSizeFromFile(std::string line) {
     }
     this->width = stoi(w);
     this->height = stoi(h);
-    allocateMemoryForField();
 }
 
 void FileManagment::getRuleFromFile(std::string line) {
@@ -101,7 +101,7 @@ void FileManagment::saveToFile(std::string nameFile) {
     fout << this->width << "/" << this->height << std::endl;
     for (int i = 0; i < this->height; ++i) {
         for (int j = 0; j < this->width; ++j) {
-            if (field[i][j]) {
+            if ((*this)(i, j)) {
                 fout << i << " " << j << std::endl;
             }
         }
@@ -128,7 +128,7 @@ void FileManagment::printUniverse() {
     for (int i = 0; i < this->height; ++i) {
         std::cout << "#";
         for (int j = 0; j < this->width; ++j) {
-            if (field[i][j]) {
+            if ((*this)(i, j)) {
                 std::cout << "@";
             } else {
                 std::cout << " ";

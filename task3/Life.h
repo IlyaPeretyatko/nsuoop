@@ -3,8 +3,18 @@
 
 #include <iostream>
 #include <set>
+#include <vector>
 
-
+class Cell {
+    private:
+        int x;
+        int y;
+    public:
+        Cell() = default;
+        Cell(int x, int y);
+        int getX();
+        int getY();
+};
 
 class Life {
     protected:
@@ -13,14 +23,12 @@ class Life {
         std::string name;
         std::set<int> survival;
         std::set<int> birth;
-        unsigned char **field;
-        void allocateMemoryForField();
+        std::vector<Cell> field;
     public:
-        Life();
-        Life(int width, int height);
-        ~Life();
-        unsigned char& operator()(int i, int j);
+        Life() = default;
         void newGeneration();
+        int checkNeighbours(int i, int j, int x, int y);
+        bool operator()(int i, int j);
 };
 
 
