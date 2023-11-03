@@ -23,7 +23,7 @@ class Life {
         std::string name;
         std::set<int> survival;
         std::set<int> birth;
-        std::vector<Cell> field;
+        std::vector<Cell> livingCells;
     public:
         Life() = default;
         void newGeneration();

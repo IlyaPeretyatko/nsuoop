@@ -7,7 +7,7 @@ int Cell::getX() { return x; }
 int Cell::getY() { return y; }
 
 bool Life::operator()(int i, int j) {
-    for (auto it: this->field) {
+    for (auto it: this->livingCells) {
         if (it.getX() == i && it.getY() == j) {
             return true;
         }
@@ -20,7 +20,7 @@ void Life::newGeneration() {
     int countOfNeighbours = 0;
     for (int i = 0; i < this->height; ++i) {
         for (int j = 0; j < this->width; ++j) {
-            for (auto it: this->field) {
+            for (auto it: this->livingCells) {
                 countOfNeighbours += checkNeighbours(i, j, it.getX(), it.getY());
             }
             if ((*this)(i, j) == 1) {
@@ -38,7 +38,7 @@ void Life::newGeneration() {
             countOfNeighbours = 0;
         }
     }
-    this->field = nextGeneration;
+    this->livingCells = nextGeneration;
 }
 
 
