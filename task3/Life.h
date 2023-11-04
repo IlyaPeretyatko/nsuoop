@@ -14,6 +14,7 @@ class Cell {
         Cell(int x, int y);
         int getX();
         int getY();
+        bool operator<(const Cell &other) const;
 };
 
 class Life {
@@ -23,8 +24,8 @@ class Life {
         std::string name;
         std::set<int> survival;
         std::set<int> birth;
-        std::vector<Cell> livingCells;
-        
+        std::set<Cell> livingCells;
+
         int checkNeighbours(int i, int j, int x, int y);
         bool operator()(int i, int j);
     public:

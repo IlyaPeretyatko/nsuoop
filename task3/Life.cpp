@@ -7,16 +7,20 @@ int Cell::getX() { return x; }
 int Cell::getY() { return y; }
 
 bool Life::operator()(int i, int j) {
-    for (auto it: this->livingCells) {
-        if (it.getX() == i && it.getY() == j) {
-            return true;
-        }
+    Cell needCell(i, j);
+    if (this->livingCells.count(needCell) != 0) {
+        return true;
     }
     return false;
 }
 
+bool Cell::operator<(const Cell &other) const {
+    return x < other.x || (x == other.x && y < other.y);
+}
+
+
 void Life::newGeneration() {
-    std::vector<Cell> nextGeneration;
+    std::set<Cell> nextGeneration;
     int countOfNeighbours = 0;
     for (int i = 0; i < this->height; ++i) {
         for (int j = 0; j < this->width; ++j) {
@@ -26,12 +30,12 @@ void Life::newGeneration() {
             if ((*this)(i, j) == 1) {
                 if ((this->survival).count(countOfNeighbours) != 0) {
                     Cell newCell(i, j);
-                    nextGeneration.push_back(newCell);
+                    nextGeneration.insert(newCell);
                 }
             } else {
                 if ((this->birth).count(countOfNeighbours) != 0) {
                     Cell newCell(i, j);
-                    nextGeneration.push_back(newCell);
+                    nextGeneration.insert(newCell);
                 }
             }
 

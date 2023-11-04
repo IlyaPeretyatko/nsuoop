@@ -60,6 +60,7 @@ void Game::onlineLaunch() {
         std::getline(std::cin, command);
         std::smatch smatch;
         if (command == "exit") {
+            system("clear");
             break;
         } else if (command == "help") {
             system("clear");

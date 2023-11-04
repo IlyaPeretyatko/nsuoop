@@ -17,7 +17,7 @@ void FileManagment::getCellFromFile(std::string line) {
         }
     }
     Cell newCell(std::stoi(x), std::stoi(y));
-    this->livingCells.push_back(newCell);
+    this->livingCells.insert(newCell);
 }
 
 void FileManagment::getSizeFromFile(std::string line) {
