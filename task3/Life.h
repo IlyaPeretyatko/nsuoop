@@ -25,7 +25,7 @@ class Life {
         std::set<int> birth;
         std::set<Cell> livingCells;
 
-        int checkNeighbours(int i, int j, int x, int y);
+        int checkNeighbours(int i, int j) const;
         bool operator()(int i, int j) const;
     public:
         Life() = default;

@@ -24,9 +24,7 @@ void Life::newGeneration() {
     int countOfNeighbours = 0;
     for (int i = 0; i < this->height; ++i) {
         for (int j = 0; j < this->width; ++j) {
-            for (auto it: this->livingCells) {
-                countOfNeighbours += checkNeighbours(i, j, it.getX(), it.getY());
-            }
+            countOfNeighbours = checkNeighbours(i, j);
             if ((*this)(i, j) == 1) {
                 if ((this->survival).count(countOfNeighbours) != 0) {
                     Cell newCell(i, j);
@@ -46,31 +44,33 @@ void Life::newGeneration() {
 }
 
 
-int Life::checkNeighbours(int i, int j, int x, int y) {
+int Life::checkNeighbours(int i, int j) const {
     int countOfNeighbours = 0;
-    if (x == (i + 1 + this->height) % this->height && y == (j - 1 + this->width) % this->width) {
-        countOfNeighbours++;
-    }
-    if (x == (i + 1 + this->height) % this->height && y == (j + 1 + this->width) % this->width) {
-        countOfNeighbours++;
-    }
-    if (x == (i - 1 + this->height) % this->height && y == (j - 1 + this->width) % this->width) {
-        countOfNeighbours++;
-    }
-    if (x == (i - 1 + this->height) % this->height && y == (j + 1 + this->width) % this->width) {
-        countOfNeighbours++;
-    }
-    if (x == (i + 1 + this->height) % this->height && y == j) {
-        countOfNeighbours++;
-    }
-    if (x == (i - 1 + this->height) % this->height && y == j) {
-        countOfNeighbours++;
-    }
-    if (x == i && y == (j + 1 + this->width) % this->width) {
-        countOfNeighbours++;
-    }
-    if (x == i && y == (j - 1 + this->width) % this->width) {
-        countOfNeighbours++;
+    for (auto it: this->livingCells) {
+        if (it.getX() == (i + 1 + this->height) % this->height && it.getY() == (j - 1 + this->width) % this->width) {
+            countOfNeighbours++;
+        }
+        if (it.getX() == (i + 1 + this->height) % this->height && it.getY() == (j + 1 + this->width) % this->width) {
+            countOfNeighbours++;
+        }
+        if (it.getX() == (i - 1 + this->height) % this->height && it.getY() == (j - 1 + this->width) % this->width) {
+            countOfNeighbours++;
+        }
+        if (it.getX() == (i - 1 + this->height) % this->height && it.getY() == (j + 1 + this->width) % this->width) {
+            countOfNeighbours++;
+        }
+        if (it.getX() == (i + 1 + this->height) % this->height && it.getY() == j) {
+            countOfNeighbours++;
+        }
+        if (it.getX() == (i - 1 + this->height) % this->height && it.getY() == j) {
+            countOfNeighbours++;
+        }
+        if (it.getX() == i && it.getY() == (j + 1 + this->width) % this->width) {
+            countOfNeighbours++;
+        }
+        if (it.getX() == i && it.getY() == (j - 1 + this->width) % this->width) {
+            countOfNeighbours++;
+        }
     }
     return countOfNeighbours;
 }
