@@ -2,11 +2,11 @@
 
 Cell::Cell(int x, int y) : x(x), y(y) {}
 
-int Cell::getX() { return x; }
+int Cell::getX() const { return x; }
 
-int Cell::getY() { return y; }
+int Cell::getY() const { return y; }
 
-bool Life::operator()(int i, int j) {
+bool Life::operator()(int i, int j)  const {
     Cell needCell(i, j);
     if (this->livingCells.count(needCell) != 0) {
         return true;

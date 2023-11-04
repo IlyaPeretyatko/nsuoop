@@ -14,8 +14,8 @@ class FileManagment : public Life {
     public:
         FileManagment() = default;
         void getUniverseFromFile(const std::string & path);
-        void saveToFile(const std::string & path);
-        void printUniverse();
+        void saveToFile(const std::string & path) const;
+        void printUniverse() const;
 };
 
 

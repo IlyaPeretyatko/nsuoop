@@ -78,7 +78,7 @@ void FileManagment::getUniverseFromFile(const std::string  & path) {
     file.close();
 }
 
-void FileManagment::saveToFile(const std::string & path) {
+void FileManagment::saveToFile(const std::string & path) const {
     std::ofstream fout(path);
     if (!fout.is_open()) {
         throw std::length_error("File Not Open");
@@ -105,7 +105,7 @@ void FileManagment::saveToFile(const std::string & path) {
     fout.close();
 }
 
-void FileManagment::printUniverse() {
+void FileManagment::printUniverse() const {
     std::cout << "\t" << this->name << std::endl;
     std::cout << "width x height : " << this->width << " x " << this->height << std::endl;
     std::cout << "Birth / Survival : ";

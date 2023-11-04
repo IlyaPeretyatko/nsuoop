@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <set>
-#include <vector>
 
 class Cell {
     private:
@@ -12,8 +11,8 @@ class Cell {
     public:
         Cell() = default;
         Cell(int x, int y);
-        int getX();
-        int getY();
+        int getX() const;
+        int getY() const;
         bool operator<(const Cell &other) const;
 };
 
@@ -27,7 +26,7 @@ class Life {
         std::set<Cell> livingCells;
 
         int checkNeighbours(int i, int j, int x, int y);
-        bool operator()(int i, int j);
+        bool operator()(int i, int j) const;
     public:
         Life() = default;
         void newGeneration();
