@@ -1,7 +1,7 @@
 #include "FileManagment.h"
 #include <fstream>
 
-void FileManagment::getCellFromFile(std::string line) {
+void FileManagment::getCellFromFile(const std::string &line) {
     std::string x = "";
     std::string y = "";
     bool readX = true;
@@ -20,7 +20,7 @@ void FileManagment::getCellFromFile(std::string line) {
     this->livingCells.insert(newCell);
 }
 
-void FileManagment::getSizeFromFile(std::string line) {
+void FileManagment::getSizeFromFile(const std::string & line) {
     std::string w = "";
     std::string h = "";
     bool readW = true;  
@@ -39,7 +39,7 @@ void FileManagment::getSizeFromFile(std::string line) {
     this->height = stoi(h);
 }
 
-void FileManagment::getRuleFromFile(std::string line) {
+void FileManagment::getRuleFromFile(const std::string & line) {
     bool readB = true;
     for (int i = 3; i < (int)line.size(); ++i) {
         if (line[i] == 'S') {
@@ -54,9 +54,7 @@ void FileManagment::getRuleFromFile(std::string line) {
     }
 }
 
-void FileManagment::getUniverseFromFile(std::string nameFile) {
-    std::string path = "../examples/";
-    path += nameFile;
+void FileManagment::getUniverseFromFile(const std::string  & path) {
     std::ifstream file(path);
     if (!file.is_open()) {
         throw std::length_error("File Not Open");
@@ -80,9 +78,7 @@ void FileManagment::getUniverseFromFile(std::string nameFile) {
     file.close();
 }
 
-void FileManagment::saveToFile(std::string nameFile) {
-    std::string path = "../";
-    path += nameFile;
+void FileManagment::saveToFile(const std::string & path) {
     std::ofstream fout(path);
     if (!fout.is_open()) {
         throw std::length_error("File Not Open");

@@ -8,13 +8,13 @@
 
 class FileManagment : public Life {
     private:
-        void getCellFromFile(std::string line);
-        void getSizeFromFile(std::string line);
-        void getRuleFromFile(std::string line);
+        void getCellFromFile(const std::string & line);
+        void getSizeFromFile(const std::string & line);
+        void getRuleFromFile(const std::string & line);
     public:
         FileManagment() = default;
-        void getUniverseFromFile(std::string nameFile);
-        void saveToFile(std::string nameFile);
+        void getUniverseFromFile(const std::string & path);
+        void saveToFile(const std::string & path);
         void printUniverse();
 };
 

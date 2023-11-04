@@ -41,11 +41,15 @@ void Game::launch() {
 }
 
 void Game::offlineLaunch() {
-    getUniverseFromFile(this->inputFile);
+    std::string path = "../examples/";
+    path += this->inputFile;
+    getUniverseFromFile(path);
     for (int i = 0; i < countOfIterations; ++i) {
         newGeneration();
     }
-    saveToFile(this->outputFile);
+    path = "../";
+    path += this->outputFile;
+    saveToFile(path);
 }
 
 void Game::onlineLaunch() {
@@ -53,7 +57,9 @@ void Game::onlineLaunch() {
     if (mode == 0) {
         getUniverseFromFile("../examples/example.life");
     } else if (mode == 1) {
-        getUniverseFromFile(this->inputFile);
+        std::string path = "../examples/";
+        path += this->inputFile;
+        getUniverseFromFile(path);
     }
     while (true) {
         std::string command;
@@ -69,7 +75,9 @@ void Game::onlineLaunch() {
                          "exit - finish game;\n"
                          "help - print help about commands;\n";
         } else if (std::regex_search(command, smatch, std::regex("^(dump )(\\S*)"))) {
-            saveToFile(smatch[2].str());
+            std::string path = "../";
+            path += smatch[2].str();
+            saveToFile(path);
         } else if (std::regex_search(command, std::regex("^tick")) || command.empty()) {
             system("clear");
             countOfIterations = 1;
