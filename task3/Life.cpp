@@ -46,30 +46,13 @@ void Life::newGeneration() {
 
 int Life::checkNeighbours(int i, int j) const {
     int countOfNeighbours = 0;
-    for (auto it: this->livingCells) {
-        if (it.getX() == (i + 1 + this->height) % this->height && it.getY() == (j - 1 + this->width) % this->width) {
-            countOfNeighbours++;
-        }
-        if (it.getX() == (i + 1 + this->height) % this->height && it.getY() == (j + 1 + this->width) % this->width) {
-            countOfNeighbours++;
-        }
-        if (it.getX() == (i - 1 + this->height) % this->height && it.getY() == (j - 1 + this->width) % this->width) {
-            countOfNeighbours++;
-        }
-        if (it.getX() == (i - 1 + this->height) % this->height && it.getY() == (j + 1 + this->width) % this->width) {
-            countOfNeighbours++;
-        }
-        if (it.getX() == (i + 1 + this->height) % this->height && it.getY() == j) {
-            countOfNeighbours++;
-        }
-        if (it.getX() == (i - 1 + this->height) % this->height && it.getY() == j) {
-            countOfNeighbours++;
-        }
-        if (it.getX() == i && it.getY() == (j + 1 + this->width) % this->width) {
-            countOfNeighbours++;
-        }
-        if (it.getX() == i && it.getY() == (j - 1 + this->width) % this->width) {
-            countOfNeighbours++;
+    for (int k = -1; k < 2; k++) {
+        for (int l = -1; l < 2; l++) {
+            if (k == 0 && l == 0) {
+                continue;
+            } else if ((*this)((i + k  + this->height) % this->height, (j + l + this->width) % this->width)) {
+                countOfNeighbours++;
+            }
         }
     }
     return countOfNeighbours;
