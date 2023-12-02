@@ -1,0 +1,4 @@
+/home/ilya/nsuoop/SoundProcessor/build/CMakeFiles/rebuild_cache.dir
+/home/ilya/nsuoop/SoundProcessor/build/CMakeFiles/edit_cache.dir
+/home/ilya/nsuoop/SoundProcessor/build/CMakeFiles/SoundProcessor.dir
+/home/ilya/nsuoop/SoundProcessor/build/CMakeFiles/corelib.dir
