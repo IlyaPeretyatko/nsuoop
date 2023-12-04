@@ -1,15 +1,6 @@
-#include "Launch.h"
-#include <string.h>
+#include "CommandParser.h"
 
-
-void Launch::start(int argc, char **argv) {
-    this->parserCommand(argc, argv);
-
-
-}
-
-void Launch::parserCommand(int argc, char **argv) {
-    int countInputFiles = 1;
+void CommandParser::parser(int argc, char **argv) {
     if (argc < 3) {
         throw std::length_error("Incorrect Command");
     }
@@ -25,9 +16,10 @@ void Launch::parserCommand(int argc, char **argv) {
         } else if (outputFile.empty()) {
             outputFile = argv[i];
         } else {
-            std::pair<std::string, int> newFile = {argv[i], countInputFiles};
-            this->inputFiles.push_back(newFile);
-            countInputFiles++;
+            this->inputFiles.push_back(argv[i]);
         }
+    }
+    if (inputFiles.empty()) {
+        throw std::length_error("Incorrect Command");
     }
 }

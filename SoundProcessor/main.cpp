@@ -1,7 +1,7 @@
-#include "Launch.h"
 
-int main(int argc, char **argv) {
-    Launch workingSession;
-    workingSession.start(argc, argv);
+
+//int main(int argc, char **argv) {
+int main() {
+
     return 0;
 }
