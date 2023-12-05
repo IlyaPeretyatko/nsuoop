@@ -1,5 +1,12 @@
 #include "ConfigParser.h"
 
+std::vector<std::string> ConfigParser::getConverters() const {
+  return converters;
+}
+
+std::vector<std::string> ConfigParser::getArguments() const {
+  return arguments;
+}
 
 void ConfigParser::parser(std::string const configPath) {
     std::ifstream file(configPath);

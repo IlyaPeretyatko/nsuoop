@@ -13,4 +13,7 @@ class CommandParser {
     public:
         CommandParser() = default;
         void parser(int argc, char **argv);
+        std::string getConfigPath() const;
+        std::vector<std::string> getInputFiles() const;
+        std::string getOutputFile() const;
 };

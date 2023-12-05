@@ -14,4 +14,6 @@ class ConfigParser {
     public:
         ConfigParser() = default;
         void parser(std::string const configPath);
+        std::vector<std::string> getConverters() const;
+        std::vector<std::string> getArguments() const;
 };

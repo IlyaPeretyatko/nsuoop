@@ -23,3 +23,14 @@ void CommandParser::parser(int argc, char **argv) {
         throw std::length_error("Incorrect Command");
     }
 }
+
+std::string CommandParser::getConfigPath() const {
+    return this->configPath;
+}
+std::vector<std::string> CommandParser::getInputFiles() const {
+  return this->inputFiles;
+}
+
+std::string CommandParser::getOutputFile() const {
+  return this->outputFile;
+}

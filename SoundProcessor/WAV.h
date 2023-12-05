@@ -27,6 +27,9 @@ class WAV {
     public:
         WAV(std::istream& in);
         void readStream(std::istream& in);
+        void writeHeader(std::ostream& out) const;
+        void writeStream(std::ostream& out) const;
+        std::vector<std::array<int16_t, 44100>> & getStream();
 };
 
 
