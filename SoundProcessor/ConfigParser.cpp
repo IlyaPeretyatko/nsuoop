@@ -8,7 +8,7 @@ std::vector<std::string> ConfigParser::getArguments() const {
   return arguments;
 }
 
-void ConfigParser::parser(std::string const configPath) {
+void ConfigParser::parser(const std::string & configPath) {
     std::ifstream file(configPath);
     if (!file.is_open()) {
         throw std::length_error("File Not Open");
@@ -21,13 +21,15 @@ void ConfigParser::parser(std::string const configPath) {
             readArgMute(line);
         } else if (line[0] == 'm' && line[1] == 'i' && line[2] == 'x' && line[3] == ' ' && line[4] == '$') {
             readArgMix(line);
+        } else if (line[0] == 'b' && line[1] == 'o' && line[2] == 'o' && line[3] == 's' && line[4] == 't' && line[5] == ' ') {
+
         } else {
             throw std::length_error("Incorrect Config File");
         }
     }
 }
 
-void ConfigParser::readArgMute(std::string const line) {
+void ConfigParser::readArgMute(const std::string & line) {
     converters.push_back("mute");
     std::string start = "";
     std::string end = "";
@@ -57,7 +59,7 @@ void ConfigParser::readArgMute(std::string const line) {
 }
 
 
-void ConfigParser::readArgMix(std::string const line) {
+void ConfigParser::readArgMix(const std::string & line) {
     converters.push_back("mix");
     std::string number = "";
     std::string start = "";
@@ -84,4 +86,33 @@ void ConfigParser::readArgMix(std::string const line) {
     }
     arguments.push_back(number);
     arguments.push_back(start);
+}
+
+void ConfigParser::readArgBoost(const std::string & line) {
+    converters.push_back("boost");
+    std::string start = "";
+    std::string end = "";
+    bool readStart = true;
+    for (int i = 5; i < (int)line.size(); ++i) {
+        if (line[i] >= '0' && line[i] <= '9') {
+            if (readStart) {
+                start += line[i];
+            } else {
+                end += line[i];
+            }
+        } else if (line[i] == ' ') {
+            if (readStart) {
+                readStart = false;
+            } else {
+                throw std::length_error("Incorrect Converter Setting");
+            }
+        } else {
+            throw std::length_error("Incorrect Converter Setting");
+        }
+    }
+    if (start.empty() || end.empty()) {
+        throw std::length_error("Incorrect Converter Setting");
+    }
+    arguments.push_back(start);
+    arguments.push_back(end);
 }

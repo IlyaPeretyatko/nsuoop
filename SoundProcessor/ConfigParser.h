@@ -9,11 +9,12 @@ class ConfigParser {
         std::vector<std::string> converters;
         std::vector<std::string> arguments;
 
-        void readArgMute(std::string const line);
-        void readArgMix(std::string const line);
+        void readArgMute(const std::string & line);
+        void readArgMix(const std::string & line);
+        void readArgBoost(const std::string & line);
     public:
         ConfigParser() = default;
-        void parser(std::string const configPath);
+        void parser(const std::string & configPath);
         std::vector<std::string> getConverters() const;
         std::vector<std::string> getArguments() const;
 };
