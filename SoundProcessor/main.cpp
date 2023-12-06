@@ -21,11 +21,10 @@ int main(int argc, char **argv) {
     return 0;
   }
 
-  CreatorMix creatorMixObject;
-  Converter * mixObject = creatorMixObject.createConverter();
-  mixObject->setArg("input2.wav", "2");
-  mixObject->converting(file1.getStream());
-
+  CreatorBassBoost creatorBoostObject;
+  Converter * boostObject = creatorBoostObject.createConverter();
+  boostObject->setArg("2", "20");
+  boostObject->converting(file1.getStream());
   file1.writeHeader(fout);
   file1.writeStream(fout);
   fout.close();

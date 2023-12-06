@@ -32,6 +32,16 @@ public:
   void converting(std::vector<std::array<int16_t, 44100>> & stream) const;
 };
 
+class BassBoost : public Converter {
+private:
+  int start;
+  int end;
+public:
+  BassBoost() = default;
+  void setArg(const std::string &start_, const std::string &end_);
+  void converting(std::vector<std::array<int16_t, 44100>> & stream) const;
+};
+
 class Creator {
 public:
   virtual Converter *createConverter() = 0;
@@ -45,4 +55,9 @@ public:
 class CreatorMix : Creator {
 public:
   Converter *createConverter() { return new Mix(); }
+};
+
+class CreatorBassBoost : Creator {
+public:
+  Converter *createConverter() { return new BassBoost(); }
 };

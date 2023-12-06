@@ -44,3 +44,20 @@ void Mix::converting(std::vector<std::array<int16_t, 44100>> & stream) const {
     }
   }
 }
+
+void BassBoost::setArg(const std::string &start_, const std::string &end_) {
+  this->start = stoi(start_);
+  this->end = stoi(end_);
+}
+
+void BassBoost::converting(std::vector<std::array<int16_t, 44100>> & stream) const {
+  if (start >= end || start < 1 || end > (int)stream.size()) {
+    throw std::length_error("Incorrect interval of time (Boost)");
+  }
+  for (int i = start; i <= end; ++i) {
+    for (int j = 0; j < 44100; ++j) {
+      if (stream[i - 1][j] >= 1000)
+        stream[i - 1][j] = 1000;
+    }
+  }
+}
