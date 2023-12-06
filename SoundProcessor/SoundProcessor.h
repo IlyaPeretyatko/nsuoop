@@ -13,8 +13,8 @@ private:
   CommandParser settings;
   ConfigParser instruction;
 
-  void startConverters(WAV fileWAV);
+  void startConverters(WAV fileWAV) const;
 public:
   SoundProcessor() = default;
-  void launch(int argc, char **argv);
+  void launch(const int argc, const char **argv);
 };

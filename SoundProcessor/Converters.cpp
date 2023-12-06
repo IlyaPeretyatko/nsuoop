@@ -56,8 +56,8 @@ void BassBoost::converting(std::vector<std::array<int16_t, 44100>> & stream) con
   }
   for (int i = start; i <= end; ++i) {
     for (int j = 0; j < 44100; ++j) {
-      if (stream[i - 1][j] >= 1000)
-        stream[i - 1][j] = 1000;
+      if (stream[i][j] >= 100)
+        stream[i][j] = 100;
     }
   }
 }

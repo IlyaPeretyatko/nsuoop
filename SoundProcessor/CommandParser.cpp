@@ -1,6 +1,6 @@
 #include "CommandParser.h"
 
-void CommandParser::parser(int argc, char **argv) {
+void CommandParser::parser(const int argc, const char **argv) {
     if (argc < 3) {
         throw std::length_error("Incorrect Command");
     }

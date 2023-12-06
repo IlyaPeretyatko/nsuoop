@@ -44,20 +44,20 @@ public:
 
 class Creator {
 public:
-  virtual Converter *createConverter() = 0;
+  virtual Converter *createConverter() const = 0;
 };
 
 class CreatorMute : Creator {
 public:
-  Converter *createConverter() { return new Mute(); }
+  Converter *createConverter() const { return new Mute(); }
 };
 
 class CreatorMix : Creator {
 public:
-  Converter *createConverter() { return new Mix(); }
+  Converter *createConverter() const { return new Mix(); }
 };
 
 class CreatorBassBoost : Creator {
 public:
-  Converter *createConverter() { return new BassBoost(); }
+  Converter *createConverter() const { return new BassBoost(); }
 };

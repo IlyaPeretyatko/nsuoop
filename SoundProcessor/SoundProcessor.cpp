@@ -1,7 +1,7 @@
 #include "SoundProcessor.h"
 
 
-void SoundProcessor::launch(int argc, char **argv) {
+void SoundProcessor::launch(const int argc, const char **argv) {
   settings.parser(argc, argv);
   instruction.parser(settings.getConfigPath());
   std::vector<std::string> inputFiles = settings.getInputFiles();
@@ -26,7 +26,7 @@ void SoundProcessor::launch(int argc, char **argv) {
   fout.close();
 }
 
-void SoundProcessor::startConverters(WAV fileWAV) {
+void SoundProcessor::startConverters(WAV fileWAV) const {
   std::vector<std::string> inputFiles = settings.getInputFiles();
   std::vector<std::string> converters = instruction.getConverters();
   std::vector<std::string> arguments = instruction.getArguments();
