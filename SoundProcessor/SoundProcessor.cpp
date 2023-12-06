@@ -14,6 +14,20 @@ void SoundProcessor::launch(int argc, char **argv) {
   fileWAV.readStream(fin);
   fin.close();
 
+  startConverters(fileWAV);
+
+  std::ofstream fout;
+  fout.open(settings.getOutputFile(), std::ios_base::binary);
+  if (!fout.is_open()) {
+    throw std::length_error("File not open.");
+  }
+  fileWAV.writeHeader(fout);
+  fileWAV.writeStream(fout);
+  fout.close();
+}
+
+void SoundProcessor::startConverters(WAV fileWAV) {
+  std::vector<std::string> inputFiles = settings.getInputFiles();
   std::vector<std::string> converters = instruction.getConverters();
   std::vector<std::string> arguments = instruction.getArguments();
   for (int i = 0; i < (int)converters.size(); ++i) {
@@ -34,13 +48,4 @@ void SoundProcessor::launch(int argc, char **argv) {
       boostObject->converting(fileWAV.getStream());
     }
   }
-
-  std::ofstream fout;
-  fout.open(settings.getOutputFile(), std::ios_base::binary);
-  if (!fout.is_open()) {
-    throw std::length_error("File not open.");
-  }
-  fileWAV.writeHeader(fout);
-  fileWAV.writeStream(fout);
-  fout.close();
 }

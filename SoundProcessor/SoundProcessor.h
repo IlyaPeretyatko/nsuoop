@@ -12,6 +12,8 @@ class SoundProcessor {
 private:
   CommandParser settings;
   ConfigParser instruction;
+
+  void startConverters(WAV fileWAV);
 public:
   SoundProcessor() = default;
   void launch(int argc, char **argv);
