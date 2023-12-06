@@ -3,11 +3,12 @@
 #include <iostream>
 #include <vector>
 #include <array>
+#include "WAV.h"
 
 class Converter {
 public:
   virtual ~Converter(){}
-  virtual void setTimeInterval(const int &start_, const int &end_) = 0;
+  virtual void setArg(const std::string &arg1, const std::string &arg2) = 0;
   virtual void converting(std::vector<std::array<int16_t, 44100>> & stream) const = 0;
 };
 
@@ -16,15 +17,20 @@ private:
   int start;
   int end;
 public:
-  void setTimeInterval(const int &start_, const int &end_);
+  Mute() = default;
+  void setArg(const std::string &start_, const std::string &end_);
   void converting(std::vector<std::array<int16_t, 44100>> & stream) const;
 };
 
-//class Mix : public Converter {
-//public:
-//  Mix() = default;
-//  void converting(std::vector<std::array<int16_t, 44100>> & stream) const;
-//};
+class Mix : public Converter {
+private:
+  std::string file;
+  int start;
+public:
+  Mix() = default;
+  void setArg(const std::string &file_, const std::string &start_);
+  void converting(std::vector<std::array<int16_t, 44100>> & stream) const;
+};
 
 class Creator {
 public:
@@ -33,11 +39,10 @@ public:
 
 class CreatorMute : Creator {
 public:
-  CreatorMute() = default;
   Converter *createConverter() { return new Mute(); }
 };
 
-//class CreatorMix : Creator {
-//public:
-//  Converter *createConverter() { return new Mix(); }
-//};
+class CreatorMix : Creator {
+public:
+  Converter *createConverter() { return new Mix(); }
+};

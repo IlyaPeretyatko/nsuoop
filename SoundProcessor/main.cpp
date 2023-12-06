@@ -21,10 +21,10 @@ int main(int argc, char **argv) {
     return 0;
   }
 
-  CreatorMute creatorMuteObject;
-  Converter * muteObject = creatorMuteObject.createConverter();
-  muteObject->setTimeInterval(1, 30);
-  muteObject->converting(file1.getStream());
+  CreatorMix creatorMixObject;
+  Converter * mixObject = creatorMixObject.createConverter();
+  mixObject->setArg("input2.wav", "2");
+  mixObject->converting(file1.getStream());
 
   file1.writeHeader(fout);
   file1.writeStream(fout);
