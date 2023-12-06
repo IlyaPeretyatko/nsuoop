@@ -10,7 +10,7 @@ void Mute::converting(std::vector<std::array<int16_t, 44100>> & stream) const {
     throw std::length_error("Incorrect interval of time (Mute)");
   }
   for (int i = start; i <= end; ++i) {
-    stream[i - 1].fill(0);
+    stream[i].fill(0);
   }
 }
 
@@ -40,7 +40,7 @@ void Mix::converting(std::vector<std::array<int16_t, 44100>> & stream) const {
   }
   for (int i = start; i <= end; ++i) {
     for (int j = 0; j < 44100; ++j) {
-      stream[i - 1][j] = (stream[i - 1][j] / 2) + (otherStream[i - 1][j] / 2);
+      stream[i][j] = (stream[i][j] / 2) + (otherStream[i][j] / 2);
     }
   }
 }
