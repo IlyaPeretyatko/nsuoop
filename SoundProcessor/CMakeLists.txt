@@ -14,7 +14,7 @@ else()
     add_compile_options(-Wall -Wextra -pedantic -Werror)
 endif()
 
-add_library(corelib OBJECT CommandParser.cpp ConfigParser.cpp WAV.cpp Converters.cpp SoundProcessor.cpp)
+add_library(corelib OBJECT lib/CommandParser.cpp lib/ConfigParser.cpp lib/WAV.cpp lib/Converters.cpp lib/SoundProcessor.cpp)
 
 add_executable(${exe_name} main.cpp)
 target_link_libraries(${exe_name} corelib)
