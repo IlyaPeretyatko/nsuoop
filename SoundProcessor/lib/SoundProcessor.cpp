@@ -3,6 +3,9 @@
 
 void SoundProcessor::launch(const int argc, const char **argv) {
   settings.parser(argc, argv);
+  if (settings.getFlagHelp()) {
+    settings.printHelp();
+  }
   instruction.parser(settings.getConfigPath());
   std::vector<std::string> inputFiles = settings.getInputFiles();
   std::ifstream fin;
@@ -13,9 +16,7 @@ void SoundProcessor::launch(const int argc, const char **argv) {
   WAV fileWAV(fin);
   fileWAV.readStream(fin);
   fin.close();
-
   startConverters(fileWAV);
-
   std::ofstream fout;
   fout.open(settings.getOutputFile(), std::ios_base::binary);
   if (!fout.is_open()) {

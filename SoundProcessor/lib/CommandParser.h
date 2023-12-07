@@ -16,4 +16,6 @@ class CommandParser {
         std::string getConfigPath() const;
         std::vector<std::string> getInputFiles() const;
         std::string getOutputFile() const;
+        void printHelp() const;
+        bool getFlagHelp() const;
 };
