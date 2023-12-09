@@ -9,6 +9,10 @@ void WAV::readStream(std::istream &in) {
   while (in.read((char *)&second[0], sizeof(second[0]) * second.size())) {
     stream.push_back(second);
   }
+  std::array<int16_t, 44100> lastSecond = {0};
+  in.readsome((char *)&lastSecond[0], sizeof(lastSecond[0]) * lastSecond.size());
+  stream.push_back(lastSecond);
+
 }
 
 void WAV::writeHeader(std::ostream &out) const {
