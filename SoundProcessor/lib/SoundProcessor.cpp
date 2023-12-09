@@ -3,9 +3,6 @@
 
 void SoundProcessor::launch(const int argc, const char **argv) {
   settings.parser(argc, argv);
-  if (settings.getFlagHelp()) {
-    settings.printHelp();
-  }
   instruction.parser(settings.getConfigPath());
   std::vector<std::string> inputFiles = settings.getInputFiles();
   std::ifstream fin;

@@ -7,7 +7,6 @@
 class CommandParser {
     private:
         std::string configPath = "config.txt";
-        bool help = false;
         std::vector<std::string> inputFiles;
         std::string outputFile;
     public:
@@ -17,5 +16,4 @@ class CommandParser {
         std::vector<std::string> getInputFiles() const;
         std::string getOutputFile() const;
         void printHelp() const;
-        bool getFlagHelp() const;
 };
