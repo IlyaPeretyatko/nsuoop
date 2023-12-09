@@ -11,7 +11,7 @@ std::vector<std::string> ConfigParser::getArguments() const {
 void ConfigParser::parser(const std::string & configPath) {
     std::ifstream file(configPath);
     if (!file.is_open()) {
-        throw std::length_error("File Not Open");
+        throw std::length_error("File not open. (Config)");
     }
     std::string line;
     while(std::getline(file, line, '\n')) {
@@ -24,7 +24,7 @@ void ConfigParser::parser(const std::string & configPath) {
         } else if (line[0] == 'b' && line[1] == 'o' && line[2] == 'o' && line[3] == 's' && line[4] == 't' && line[5] == ' ') {
             readArgBoost(line);
         } else {
-            throw std::length_error("Incorrect Config File");
+            throw std::length_error("Incorrect config file.");
         }
     }
 }
@@ -45,14 +45,14 @@ void ConfigParser::readArgMute(const std::string & line) {
             if (readStart) {
                 readStart = false;
             } else {
-                throw std::length_error("Incorrect Converter Setting");
+                throw std::length_error("Incorrect converter settings. (Mute)");
             }
         } else {
-            throw std::length_error("Incorrect Converter Setting");
+            throw std::length_error("Incorrect converter settings. (Mute)");
         }
     }
     if (start.empty() || end.empty()) {
-        throw std::length_error("Incorrect Converter Setting");
+        throw std::length_error("Incorrect converter settings. (Mute)");
     }
     arguments.push_back(start);
     arguments.push_back(end);
@@ -75,14 +75,14 @@ void ConfigParser::readArgMix(const std::string & line) {
             if (readNumber) {
                 readNumber = false;
             } else {
-                throw std::length_error("Incorrect Converter Setting");
+                throw std::length_error("Incorrect converter settings. (Mix)");
             }
         } else {
-            throw std::length_error("Incorrect Converter Setting");
+            throw std::length_error("Incorrect converter settings. (Mix)");
         }
     }
     if (number.empty() || start.empty()) {
-        throw std::length_error("Incorrect Converter Setting");
+        throw std::length_error("Incorrect converter settings. (Mix)");
     }
     arguments.push_back(number);
     arguments.push_back(start);
@@ -111,14 +111,14 @@ void ConfigParser::readArgBoost(const std::string & line) {
             } else if (readEnd) {
                 readEnd = false;
             } else {
-                throw std::length_error("Incorrect Converter Setting...");
+                throw std::length_error("Incorrect converter settings. (Boost)");
             }
         } else {
-            throw std::length_error("Incorrect Converter Setting");
+            throw std::length_error("Incorrect converter settings. (Boost)");
         }
     }
     if (start.empty() || end.empty() || koef.empty()) {
-        throw std::length_error("Incorrect Converter Setting");
+        throw std::length_error("Incorrect converter settings. (Boost)");
     }
     arguments.push_back(start);
     arguments.push_back(end);

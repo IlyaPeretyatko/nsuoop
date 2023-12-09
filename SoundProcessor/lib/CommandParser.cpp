@@ -2,14 +2,14 @@
 
 void CommandParser::parser(const int argc, const char **argv) {
     if (argc < 3) {
-        throw std::length_error("Incorrect Command");
+        throw std::length_error("Incorrect command.");
     }
     for (int i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "-h") == 0) {
             help = true;
         } else if (strcmp(argv[i], "-c") == 0) {
             if (i + 1 == argc) {
-                throw std::length_error("Incorrect Command");
+                throw std::length_error("Incorrect command.");
             }
             this->configPath = argv[i + 1];
             i++;
@@ -20,7 +20,7 @@ void CommandParser::parser(const int argc, const char **argv) {
         }
     }
     if (inputFiles.empty()) {
-        throw std::length_error("Incorrect Command");
+        throw std::length_error("Incorrect command.");
     }
 }
 
