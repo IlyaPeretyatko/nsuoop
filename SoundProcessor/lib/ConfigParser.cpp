@@ -22,7 +22,7 @@ void ConfigParser::parser(const std::string & configPath) {
         } else if (line[0] == 'm' && line[1] == 'i' && line[2] == 'x' && line[3] == ' ' && line[4] == '$') {
             readArgMix(line);
         } else if (line[0] == 'b' && line[1] == 'o' && line[2] == 'o' && line[3] == 's' && line[4] == 't' && line[5] == ' ') {
-
+            readArgBoost(line);
         } else {
             throw std::length_error("Incorrect Config File");
         }
@@ -92,27 +92,35 @@ void ConfigParser::readArgBoost(const std::string & line) {
     converters.push_back("boost");
     std::string start = "";
     std::string end = "";
+    std::string koef = "";
     bool readStart = true;
-    for (int i = 5; i < (int)line.size(); ++i) {
+    bool readEnd = false;
+    for (int i = 6; i < (int)line.size(); ++i) {
         if (line[i] >= '0' && line[i] <= '9') {
             if (readStart) {
                 start += line[i];
-            } else {
+            } else if (readEnd) {
                 end += line[i];
+            } else {
+                koef += line[i];
             }
         } else if (line[i] == ' ') {
             if (readStart) {
                 readStart = false;
+                readEnd = true;
+            } else if (readEnd) {
+                readEnd = false;
             } else {
-                throw std::length_error("Incorrect Converter Setting");
+                throw std::length_error("Incorrect Converter Setting...");
             }
         } else {
             throw std::length_error("Incorrect Converter Setting");
         }
     }
-    if (start.empty() || end.empty()) {
+    if (start.empty() || end.empty() || koef.empty()) {
         throw std::length_error("Incorrect Converter Setting");
     }
     arguments.push_back(start);
     arguments.push_back(end);
+    arguments.push_back(koef);
 }

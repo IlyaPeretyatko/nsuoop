@@ -27,25 +27,35 @@ void SoundProcessor::launch(const int argc, const char **argv) {
   fout.close();
 }
 
-void SoundProcessor::startConverters(WAV fileWAV) const {
+void SoundProcessor::startConverters(WAV & fileWAV) const {
   std::vector<std::string> inputFiles = settings.getInputFiles();
   std::vector<std::string> converters = instruction.getConverters();
   std::vector<std::string> arguments = instruction.getArguments();
+  int j = 0;
   for (int i = 0; i < (int)converters.size(); ++i) {
+    std::vector<std::string> params;
     if (converters[i] == "mute") {
       CreatorMute creatorMuteObject;
       Converter * muteObject = creatorMuteObject.createConverter();
-      muteObject->setArg(arguments[i * 2], arguments[i * 2 + 1]);
+      for (int k = 0; k < 2; ++k) {
+        params.push_back(arguments[j++]);
+      }
+      muteObject->setArg(params);
       muteObject->converting(fileWAV.getStream());
     } else if (converters[i] == "mix") {
       CreatorMix creatorMixObject;
       Converter * mixObject = creatorMixObject.createConverter();
-      mixObject->setArg(inputFiles[stoi(arguments[i * 2]) - 1], arguments[i * 2 + 1]);
+      params.push_back(inputFiles[stoi(arguments[j++]) - 1]);
+      params.push_back(arguments[j++]);
+      mixObject->setArg(params);
       mixObject->converting(fileWAV.getStream());
     } else if (converters[i] == "boost") {
-      CreatorBassBoost creatorBoostObject;
+      CreatorBoost creatorBoostObject;
       Converter * boostObject = creatorBoostObject.createConverter();
-      boostObject->setArg(arguments[i * 2], arguments[i * 2 + 1]);
+      for (int k = 0; k < 3; ++k) {
+        params.push_back(arguments[j++]);
+      }
+      boostObject->setArg(params);
       boostObject->converting(fileWAV.getStream());
     }
   }
