@@ -2,6 +2,9 @@
 
 WAV::WAV(std::istream &in) {
   in.read(reinterpret_cast<char *>(&header), sizeof(WAVHeader));
+  if (header.audioFormat != 1 || header.numChannels != 1 || header.bitsPerSample != 16) {
+    throw std::length_error("Wrong format of wav file.");
+  }
 }
 
 void WAV::readStream(std::istream &in) {
