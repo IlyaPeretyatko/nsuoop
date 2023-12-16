@@ -39,6 +39,7 @@ void SoundProcessor::startConverters(WAV & fileWAV) const {
       }
       muteObject->setArg(params);
       muteObject->converting(fileWAV.getStream());
+      delete muteObject;
     } else if (converters[i] == "mix") {
       CreatorMix creatorMixObject;
       Converter * mixObject = creatorMixObject.createConverter();
@@ -46,6 +47,7 @@ void SoundProcessor::startConverters(WAV & fileWAV) const {
       params.push_back(arguments[j++]);
       mixObject->setArg(params);
       mixObject->converting(fileWAV.getStream());
+      delete mixObject;
     } else if (converters[i] == "boost") {
       CreatorBoost creatorBoostObject;
       Converter * boostObject = creatorBoostObject.createConverter();
@@ -54,6 +56,7 @@ void SoundProcessor::startConverters(WAV & fileWAV) const {
       }
       boostObject->setArg(params);
       boostObject->converting(fileWAV.getStream());
+      delete boostObject;
     }
   }
 }
