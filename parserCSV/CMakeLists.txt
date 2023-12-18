@@ -14,7 +14,7 @@ else()
     add_compile_options(-Wall -Wextra -pedantic -Werror)
 endif()
 
-add_library(corelib OBJECT parser.cpp)
+add_library(corelib OBJECT print_tuple.h)
 
 add_executable(${exe_name} main.cpp)
 target_link_libraries(${exe_name} corelib)
