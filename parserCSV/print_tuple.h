@@ -4,34 +4,22 @@
 #include <ostream>
 #include <tuple>
 
-
-
-template <typename Ch, typename Tr>
-std::basic_ostream<Ch, Tr>& printTuple(std::basic_ostream<Ch, Tr>& os, const std::tuple<>&)
-{
-    return os;
-}
-
 template <typename Ch, typename Tr, typename T>
-std::basic_ostream<Ch, Tr>& printTuple(std::basic_ostream<Ch, Tr>& os, const std::tuple<T> & t)
-{
-    os << std::get<0>(t);
-    return os;
+void printElem(std::basic_ostream<Ch, Tr>& os, size_t &index, const T& x) {
+  if (index++ > 0) {
+    os << ", ";
+  }
+  os << x;
 }
 
-template <typename Ch, typename Tr, typename T, typename ...Args>
-std::basic_ostream<Ch, Tr>& printTuple(std::basic_ostream<Ch, Tr>& os, std::tuple<T, Args...>const& t)
-{
-    os << std::get<0>(t);
-    printTuple(os << ", ", std::tuple<Args...>(std::get<Args>(t)...));
-    return os;
+template <typename Ch, typename Tr, typename ...Args, size_t... Is>
+auto& printTuple(std::basic_ostream<Ch, Tr>& os, const std::tuple<Args...>& t, std::index_sequence<Is...>) {
+  size_t index = 0;
+  (printElem(os, index, std::get<Is>(t)), ...);
+  return os;
 }
 
-template<typename Ch, typename Tr, typename ...Args>
-auto& operator<<(std::basic_ostream<Ch, Tr>& os, const std::tuple<Args...> & t)
-{
-    printTuple(os, t);
-    return os;
+template <typename Ch, typename Tr, typename ...Args, size_t TupSize = std::tuple_size<std::tuple<Args...>>::value>
+auto& operator<<(std::basic_ostream<Ch, Tr>& os, const std::tuple<Args...>& t) {
+  return printTuple(os, t, std::make_index_sequence<TupSize>{});
 }
-
-
