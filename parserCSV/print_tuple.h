@@ -12,6 +12,11 @@ void printElem(std::basic_ostream<Ch, Tr>& os, size_t &index, const T& x) {
   os << x;
 }
 
+template <typename Ch, typename Tr, size_t... Is>
+auto& printTuple(std::basic_ostream<Ch, Tr>& os, const std::tuple<>&, std::index_sequence<Is...>) {
+  return os;
+}
+
 template <typename Ch, typename Tr, typename ...Args, size_t... Is>
 auto& printTuple(std::basic_ostream<Ch, Tr>& os, const std::tuple<Args...>& t, std::index_sequence<Is...>) {
   size_t index = 0;
