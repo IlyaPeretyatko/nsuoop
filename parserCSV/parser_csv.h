@@ -1,6 +1,5 @@
 #pragma once
 
-#include "print_tuple.h"
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -14,31 +13,25 @@
 template <typename ...Args>
 class CSVParser {
 public:
-  class InputIterator;
+  class Iterator;
 
   CSVParser(std::ifstream &file, size_t countLineSkip, char rowSeparator = '\n', char columnSeparator = ',', char escapeSeparator = '\"')
-      : file_(file), countLineSkip_(countLineSkip), rowSeparator_(rowSeparator), columnSeparator_(columnSeparator), escapeSeparator_(escapeSeparator) {
+      : file_(file), countLineSkip_(countLineSkip), rowSeparator_(rowSeparator), columnSeparator_(columnSeparator), escapeSeparator_(escapeSeparator), currentLine_(0) {
     if (!file.is_open()) {
       // error
     }
-    currentLine_ = 0;
+  }
+
+  Iterator begin() {
     std::string lineSkip;
     for (size_t i = 0; i < countLineSkip_; ++i) {
       std::getline(file_, lineSkip, rowSeparator_);
     }
+    return Iterator(*this, 1);
   }
 
-  InputIterator begin() {
-    file_.clear();
-    file_.seekg(0, std::ifstream::beg);
-    for (size_t i = 0; i < countLineSkip_; ++i) {
-      file_.ignore(std::numeric_limits<std::streamsize>::max(), rowSeparator_);
-    }
-    return InputIterator(*this, InputIterator::Pointer::BEGIN);
-  }
-
-  InputIterator end() {
-    return InputIterator(*this, InputIterator::Pointer::END);
+  Iterator end() {
+    return Iterator(*this, 0);
   }
 
 private:
@@ -89,16 +82,10 @@ std::tuple<Args...> makeTuple(std::vector<std::string> params) {
 }
 
 template <typename ...Args>
-class CSVParser<Args...>::InputIterator {
+class CSVParser<Args...>::Iterator {
 public:
-  enum class Pointer
-  {
-    BEGIN,
-    END
-  };
-
-  InputIterator(CSVParser<Args...>& father, Pointer point) : father_(father) {
-    if (point == Pointer::BEGIN) {
+  Iterator(CSVParser<Args...>& father, bool isBegin) : father_(father) {
+    if (isBegin) {
       nextLine();
     } else {
       iter = nullptr;
@@ -107,21 +94,15 @@ public:
 
   std::tuple<Args...> & operator*() const { return *iter; }
 
-  const InputIterator operator++()
+  const Iterator operator++()
   {
     nextLine();
     return *this;
   }
 
-  const InputIterator operator++(int) {
-    const InputIterator temp = *this;
-    nextLine();
-    return temp;
-  }
+  bool operator==(const Iterator &other) const { return (iter == other.iter); }
 
-  bool operator==(const InputIterator &other) const { return (iter == other.iter); }
-
-  bool operator!=(const InputIterator &other) const { return (iter != other.iter); }
+  bool operator!=(const Iterator &other) const { return (iter != other.iter); }
 
 private:
   CSVParser<Args...> & father_;
@@ -132,11 +113,7 @@ private:
     if (line.empty()) {
       iter = nullptr;
     } else {
-      iter = std::make_shared<std::tuple<Args...>>(makeTuple(father_.getTupleOfLine(line)));
+      iter = std::make_shared<std::tuple<Args...>>(makeTuple<Args...>(father_.getTupleOfLine(line)));
     }
   }
 };
-
-
-
-
