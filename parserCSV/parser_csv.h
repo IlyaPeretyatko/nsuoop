@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 #include <limits>
+#include <regex>
 
 template <typename ...Args>
 class CSVParser {
@@ -18,7 +19,7 @@ public:
   CSVParser(std::ifstream &file, size_t countLineSkip, char rowSeparator = '\n', char columnSeparator = ',', char escapeSeparator = '\"')
       : file_(file), countLineSkip_(countLineSkip), rowSeparator_(rowSeparator), columnSeparator_(columnSeparator), escapeSeparator_(escapeSeparator), currentLine_(0) {
     if (!file.is_open()) {
-      // error
+      throw std::length_error("File Not Open.");
     }
   }
 
@@ -49,7 +50,7 @@ private:
     return line;
   }
 
-  std::vector<std::string> getTupleOfLine(std::string &line) {
+  std::vector<std::string> getTupleOfLine(const std::string &line) {
     std::vector<std::string> tupleVector;
     std::stringstream ss(line);
     std::string substr;
@@ -57,10 +58,35 @@ private:
       tupleVector.push_back(substr);
     }
     if (tupleVector.size() != sizeof...(Args)) {
-      // error
+      //error
     }
+    checkEscapeSymbol(tupleVector);
     return tupleVector;
   }
+
+  void checkEscapeSymbol(std::vector<std::string> & tupleVector) {
+    for (size_t column = 0; column < tupleVector.size(); ++column) {
+      size_t countEscapeSymbol = 0;
+      int beginSubstr = 0;
+      std::vector<std::string> betweenEscapeSymbol;
+      for (size_t i = 0; i < tupleVector[column].length(); ++i) {
+        if (tupleVector[column][i] == escapeSeparator_) {
+          betweenEscapeSymbol.push_back(tupleVector[column].substr(beginSubstr, i - beginSubstr));
+          beginSubstr = i + 1;
+          ++countEscapeSymbol;
+        }
+      }
+      betweenEscapeSymbol.push_back(tupleVector[column].substr(beginSubstr, tupleVector[column].length() - beginSubstr));
+      if (countEscapeSymbol % 2 != 0) {
+        // error
+      }
+      tupleVector[column].clear();
+      for (size_t i = 0; i <= countEscapeSymbol; i += 2) {
+        tupleVector[column].insert(tupleVector[column].size(), betweenEscapeSymbol[i]);
+      }
+    }
+  }
+
 };
 
 template <typename T>
