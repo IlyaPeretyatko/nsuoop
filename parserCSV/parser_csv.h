@@ -58,7 +58,7 @@ private:
       tupleVector.push_back(substr);
     }
     if (tupleVector.size() != sizeof...(Args)) {
-      //error
+      throw std::length_error("Wrong Count Of Columns. Line:" + std::to_string(this->currentLine_));
     }
     checkEscapeSymbol(tupleVector);
     return tupleVector;
@@ -78,7 +78,7 @@ private:
       }
       betweenEscapeSymbol.push_back(tupleVector[column].substr(beginSubstr, tupleVector[column].length() - beginSubstr));
       if (countEscapeSymbol % 2 != 0) {
-        // error
+        throw std::length_error("Wrong Count Of Escape Symbols. Line: " + std::to_string(this->currentLine_) + ". Columnn: " + std::to_string(column + 1) + ".");
       }
       tupleVector[column].clear();
       for (size_t i = 0; i <= countEscapeSymbol; i += 2) {
