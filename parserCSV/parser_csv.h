@@ -52,39 +52,38 @@ private:
 
   std::vector<std::string> getTupleOfLine(const std::string &line) {
     std::vector<std::string> tupleVector;
-    std::stringstream ss(line);
     std::string substr;
+    std::string lineWithoutEscape = checkEscapeSymbol(line);
+    std::stringstream ss(lineWithoutEscape);
     while (std::getline(ss, substr, columnSeparator_)) {
       tupleVector.push_back(substr);
     }
     if (tupleVector.size() != sizeof...(Args)) {
       throw std::length_error("Wrong Count Of Columns. Line:" + std::to_string(this->currentLine_));
     }
-    checkEscapeSymbol(tupleVector);
     return tupleVector;
   }
 
-  void checkEscapeSymbol(std::vector<std::string> & tupleVector) {
-    for (size_t column = 0; column < tupleVector.size(); ++column) {
+  std::string checkEscapeSymbol(const std::string & line) {
       size_t countEscapeSymbol = 0;
       int beginSubstr = 0;
       std::vector<std::string> betweenEscapeSymbol;
-      for (size_t i = 0; i < tupleVector[column].length(); ++i) {
-        if (tupleVector[column][i] == escapeSeparator_) {
-          betweenEscapeSymbol.push_back(tupleVector[column].substr(beginSubstr, i - beginSubstr));
+      for (size_t i = 0; i < line.length(); ++i) {
+        if (line[i] == escapeSeparator_) {
+          betweenEscapeSymbol.push_back(line.substr(beginSubstr, i - beginSubstr));
           beginSubstr = i + 1;
           ++countEscapeSymbol;
         }
       }
-      betweenEscapeSymbol.push_back(tupleVector[column].substr(beginSubstr, tupleVector[column].length() - beginSubstr));
+      betweenEscapeSymbol.push_back(line.substr(beginSubstr, line.length() - beginSubstr));
       if (countEscapeSymbol % 2 != 0) {
-        throw std::length_error("Wrong Count Of Escape Symbols. Line: " + std::to_string(this->currentLine_) + ". Columnn: " + std::to_string(column + 1) + ".");
+        throw std::length_error("Wrong Count Of Escape Symbols. Line: " + std::to_string(this->currentLine_) + ".");
       }
-      tupleVector[column].clear();
+      std::string lineWithoutEscape;
       for (size_t i = 0; i <= countEscapeSymbol; i += 2) {
-        tupleVector[column].insert(tupleVector[column].size(), betweenEscapeSymbol[i]);
+        lineWithoutEscape += betweenEscapeSymbol[i];
       }
-    }
+      return lineWithoutEscape;
   }
 
 };
