@@ -52,38 +52,48 @@ private:
 
   std::vector<std::string> getTupleOfLine(const std::string &line) {
     std::vector<std::string> tupleVector;
-    std::string substr;
-    std::string lineWithoutEscape = checkEscapeSymbol(line);
-    std::stringstream ss(lineWithoutEscape);
-    while (std::getline(ss, substr, columnSeparator_)) {
-      tupleVector.push_back(substr);
+    size_t beginSubstr = 0;
+    bool isEscape = false;
+    for (size_t i = 0; i < line.length(); ++i) {
+      if (line[i] == escapeSeparator_) {
+        isEscape = (isEscape) ? false: true;
+      }
+      if (line[i] == columnSeparator_ && isEscape == false) {
+        tupleVector.push_back(line.substr(beginSubstr, i - beginSubstr));
+        beginSubstr = i + 1;
+      }
     }
+    tupleVector.push_back(line.substr(beginSubstr, line.length() - beginSubstr));
     if (tupleVector.size() != sizeof...(Args)) {
       throw std::length_error("Wrong Count Of Columns. Line:" + std::to_string(this->currentLine_));
     }
+    tupleVector = deleteEscapeSymbols(tupleVector);
     return tupleVector;
   }
 
-  std::string checkEscapeSymbol(const std::string & line) {
+  std::vector<std::string> deleteEscapeSymbols(const std::vector<std::string> & tupleVector) {
+    std::vector<std::string> returnTupleVector;
+    for (size_t column = 0; column < tupleVector.size(); ++column) {
       size_t countEscapeSymbol = 0;
       int beginSubstr = 0;
-      std::vector<std::string> betweenEscapeSymbol;
-      for (size_t i = 0; i < line.length(); ++i) {
-        if (line[i] == escapeSeparator_) {
-          betweenEscapeSymbol.push_back(line.substr(beginSubstr, i - beginSubstr));
+      std::vector<std::string> tmpTupleVector;
+      for (size_t i = 0; i < tupleVector[column].length(); ++i) {
+        if (tupleVector[column][i] == escapeSeparator_) {
+          tmpTupleVector.push_back(tupleVector[column].substr(beginSubstr, i - beginSubstr));
           beginSubstr = i + 1;
-          ++countEscapeSymbol;
         }
       }
-      betweenEscapeSymbol.push_back(line.substr(beginSubstr, line.length() - beginSubstr));
+      tmpTupleVector.push_back(tupleVector[column].substr(beginSubstr, tupleVector[column].length() - beginSubstr));
       if (countEscapeSymbol % 2 != 0) {
-        throw std::length_error("Wrong Count Of Escape Symbols. Line: " + std::to_string(this->currentLine_) + ".");
+        throw std::length_error("Wrong Count Of Escape Symbols. Line: " + std::to_string(this->currentLine_) + ". Column: " + std::to_string(column) + ".");
       }
-      std::string lineWithoutEscape;
-      for (size_t i = 0; i <= countEscapeSymbol; i += 2) {
-        lineWithoutEscape += betweenEscapeSymbol[i];
+      std::string elemOfTuple = "";
+      for (auto j : tmpTupleVector) {
+        elemOfTuple += j;
       }
-      return lineWithoutEscape;
+      returnTupleVector.push_back(elemOfTuple);
+    }
+    return returnTupleVector;
   }
 
 };
