@@ -56,7 +56,7 @@ TEST(ParserCSV, standart2) {
   for (auto line : parser) {
     ss << line << std::endl;
   }
-  EXPECT_EQ(ss.str(), "1, 2, aboba\n1, 5.5, wow\n");
+  EXPECT_EQ(ss.str(), "1, 2, aboba\n1, 5.5, wowdamn\n");
 }
 
 TEST(ParserCSV, standart3) {
@@ -86,15 +86,15 @@ TEST(ParserCSV, improved1) {
   for (auto line : parser) {
     ss << line << std::endl;
   }
-  EXPECT_EQ(ss.str(), "1, 2\"hahahaha\", aboba\n1, 5.5, wow\"damn\"\n");
+  EXPECT_EQ(ss.str(), "1, \"hahahaha\"bebra, aboba\n1, kek, wow\"damn\"\n");
 }
 
 TEST(ParserCSV, improved2) {
   std::ifstream file("../csv_for_tests/test5.csv");
   std::stringstream ss;
-  CSVParser<int, int, int, int, int> parser(file, 0, '\n', ';', '^');
+  CSVParser<int, std::string, int, int, std::string> parser(file, 0, '\n', ';', '^');
   for (auto line : parser) {
     ss << line << std::endl;
   }
-  EXPECT_EQ(ss.str(), "1, 2, 3, 4, 5\n6, 7, 8, 9, 10\n");
+  EXPECT_EQ(ss.str(), "1, tw;o, 3, 4, 5\n6, 7, 8, 9, 10\n");
 }
