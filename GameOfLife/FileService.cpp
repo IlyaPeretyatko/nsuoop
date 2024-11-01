@@ -1,7 +1,12 @@
-#include "FileManagment.h"
+#include "FileService.h"
 #include <fstream>
 
-void FileManagment::getCellFromFile(const std::string &line) {
+
+FileService::FileService(Life * life) {
+    this->life = life;
+}
+
+void FileService::getCellFromFile(const std::string &line) {
     std::string x = "";
     std::string y = "";
     bool readX = true;
@@ -16,11 +21,10 @@ void FileManagment::getCellFromFile(const std::string &line) {
             y += line[i];
         }
     }
-    Cell newCell(std::stoi(x), std::stoi(y));
-    this->livingCells.insert(newCell);
+    life->addCell(std::stoi(x), std::stoi(y));
 }
 
-void FileManagment::getSizeFromFile(const std::string & line) {
+void FileService::getSizeFromFile(const std::string & line) {
     std::string w = "";
     std::string h = "";
     bool readW = true;  
@@ -35,35 +39,36 @@ void FileManagment::getSizeFromFile(const std::string & line) {
             }
         }
     }
-    this->width = stoi(w);
-    this->height = stoi(h);
+    life->setWidth(stoi(w));
+    life->setHeight(stoi(h));
 }
 
-void FileManagment::getRuleFromFile(const std::string & line) {
+void FileService::getRuleFromFile(const std::string & line) {
     bool readB = true;
     for (int i = 3; i < (int)line.size(); ++i) {
         if (line[i] == 'S') {
             readB = false;
         } else if (line[i] >= '0' && line[i] <= '9') {
             if (readB) {
-                this->birth.insert((unsigned char)line[i] - '0');
+                life->addBirth((unsigned char)line[i] - '0');
             } else {
-                this->survival.insert((unsigned char)line[i] - '0');
+                life->addSurvival((unsigned char)line[i] - '0');
             }
         }
     }
 }
 
-void FileManagment::getUniverseFromFile(const std::string  & path) {
+void FileService::getUniverseFromFile(const std::string  & path) {
     std::ifstream file(path);
     if (!file.is_open()) {
         throw std::length_error("File Not Open");
     }
     std::string line;
+    std::string name;
     while(std::getline(file, line, '\n')) {
         if (line[0] == '#' && line[1] == 'N' && line[2] == ' ') {
             for (int i = 3; i < (int)line.size(); ++i) {
-                this->name += line[i];
+                name += line[i];
             }
         } else if (line[0] == '#' && line[1] == 'R' && line[2] == ' ') {
             getRuleFromFile(line);
@@ -75,29 +80,30 @@ void FileManagment::getUniverseFromFile(const std::string  & path) {
             getCellFromFile(line);
         }
     }
+    life->setName(name);
     file.close();
 }
 
-void FileManagment::saveToFile(const std::string & path) const {
+void FileService::saveToFile(const std::string & path) const {
     std::ofstream fout(path);
     if (!fout.is_open()) {
         throw std::length_error("File Not Open");
     }
     fout << "#Life 1.06" << std::endl;
-    fout << "#N " << this->name << std::endl;
+    fout << "#N " << life->getName() << std::endl;
     fout << "#R " << "B";
-    for (auto& it: this->birth) {
+    for (auto& it: life->getBirth()) {
         fout << it;
     }
     fout << "/S";
-    for (auto& it: this->survival) {
+    for (auto& it: life->getSurvival()) {
         fout << it;
     }
     fout << std::endl << "#S ";
-    fout << this->width << "/" << this->height << std::endl;
-    for (int i = 0; i < this->height; ++i) {
-        for (int j = 0; j < this->width; ++j) {
-            if ((*this)(i, j)) {
+    fout << life->getWidth() << "/" << life->getHeight() << std::endl;
+    for (int i = 0; i < life->getHeight(); ++i) {
+        for (int j = 0; j < life->getWidth(); ++j) {
+            if (life->cellIsExists(i, j)) {
                 fout << i << " " << j << std::endl;
             }
         }
@@ -105,26 +111,28 @@ void FileManagment::saveToFile(const std::string & path) const {
     fout.close();
 }
 
-void FileManagment::printUniverse() const {
-    std::cout << "\t" << this->name << std::endl;
-    std::cout << "width x height : " << this->width << " x " << this->height << std::endl;
+void FileService::printUniverse() const {
+    int width = life->getWidth();
+    int height = life->getHeight();
+    std::cout << "\t" << life->getName() << std::endl;
+    std::cout << "width x height : " << width << " x " << height << std::endl;
     std::cout << "Birth / Survival : ";
-    for (auto& it: this->birth) {
+    for (auto& it: life->getBirth()) {
         std::cout << it << " ";
     }
     std::cout << "/ ";
-    for (auto& it: this->survival) {
+    for (auto& it: life->getSurvival()) {
         std::cout << it << " ";
     }
     std::cout << std::endl;
-    for (int i = 0; i < this->width + 2; ++i) {
+    for (int i = 0; i < width + 2; ++i) {
         std::cout << "#";
     }
     std::cout << std::endl;
-    for (int i = 0; i < this->height; ++i) {
+    for (int i = 0; i < height; ++i) {
         std::cout << "#";
-        for (int j = 0; j < this->width; ++j) {
-            if ((*this)(i, j)) {
+        for (int j = 0; j < width; ++j) {
+            if (life->cellIsExists(i, j)) {
                 std::cout << "@";
             } else {
                 std::cout << " ";
@@ -132,8 +140,9 @@ void FileManagment::printUniverse() const {
         }
         std::cout << "#" << std::endl;
     }
-    for (int i = 0; i < this->width + 2; ++i) {
+    for (int i = 0; i < width + 2; ++i) {
         std::cout << "#";
     }
     std::cout << std::endl;
 }
+

@@ -1,10 +1,5 @@
 #include "Life.h"
 
-Cell::Cell(int x, int y) : x(x), y(y) {}
-
-int Cell::getX() const { return x; }
-
-int Cell::getY() const { return y; }
 
 bool Life::operator()(int i, int j)  const {
     Cell needCell(i, j);
@@ -56,4 +51,46 @@ int Life::checkNeighbours(int i, int j) const {
         }
     }
     return countOfNeighbours;
+}
+
+
+int Life::getWidth() const { return width; }
+
+int Life::getHeight() const { return height; }
+
+std::set<int> Life::getSurvival() const { return survival; }
+
+std::set<int> Life::getBirth() const { return birth; }
+
+void Life::addCell(const int & i, const int & j) {
+    Cell cell(i, j);
+    livingCells.insert(cell);
+}
+
+void Life::setWidth(const int & width) {
+    this->width = width;
+}
+
+void Life::setHeight(const int & height) {
+    this->height = height;
+}
+
+void Life::addBirth(const int & i) {
+    birth.insert(i);
+}
+
+void Life::addSurvival(const int & i) {
+    survival.insert(i);
+}
+
+std::string Life::getName() const {
+    return name;
+}
+
+void Life::setName(const std::string & name) {
+    this->name = name;
+}
+
+bool Life::cellIsExists(const int & i, const int & j) const {
+    return (*this)(i, j);
 }

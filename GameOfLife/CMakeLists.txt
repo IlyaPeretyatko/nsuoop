@@ -14,7 +14,7 @@ else()
     add_compile_options(-Wall -Wextra -pedantic -Werror)
 endif()
 
-add_library(corelib OBJECT Life.cpp Game.cpp FileManagment.cpp)
+add_library(corelib OBJECT Life.cpp ConsoleParser.cpp FileService.cpp Cell.cpp)
 
 add_executable(${exe_name} main.cpp)
 target_link_libraries(${exe_name} corelib)
